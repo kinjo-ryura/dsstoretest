@@ -60,8 +60,8 @@ struct toolBar: View{
                             plusIsHovering = hovering
                         }
                         .onTapGesture {
-                            var newTab = IdentifiableView(title: "tab1", colorManager: ColorManager(color: .red)) { AnyView(NewTabView()) }
-                            newTab.changeContent()
+                            let tabTypeManager = TabViewTypeManager(tabType: TabViewType())
+                            let newTab = IdentifiableView(title: "tab2", tabViewTypeManager: tabTypeManager) { AnyView(NewTabView(tabViewTypeManager: tabTypeManager)) }
                             tabDataManager.addTabData(tabData: newTab)
 //                            tabDataManager.addNewTabData()
                         }

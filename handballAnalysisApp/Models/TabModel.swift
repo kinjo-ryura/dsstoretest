@@ -12,35 +12,25 @@ struct IdentifiableView<Content: View>: View, Identifiable {
     let id: UUID
     var title: String
     var content: Content
-    @ObservedObject var colorManager : ColorManager
+    @ObservedObject var tabViewTypeManager: TabViewTypeManager
     
-    init(title: String,colorManager: ColorManager, @ViewBuilder content: () -> Content) {
+    init(title: String,tabViewTypeManager: TabViewTypeManager, @ViewBuilder content: () -> Content) {
         self.id = UUID()
         self.title = title
-        self.colorManager = colorManager
+        self.tabViewTypeManager = tabViewTypeManager
         self.content = content()
     }
     
     var body: some View {
-        content
-            .background(colorManager.getColor())
-        Text(title)
-        Button {
-            colorManager.changeColor(color: .blue)
-        } label: {
-            Text("blue")
+        switch tabViewTypeManager.getTabType() {
+        case .newTabView:
+            NewTabView(tabViewTypeManager: tabViewTypeManager)
+        case .labelingTabView:
+            LabelingView()
+        case .displayTabView:
+            DisplayView()
         }
-        Button {
-            colorManager.changeColor(color: .red)
-        } label: {
-            Text("red")
-        }
-        Button {
-            colorManager.changeColor(color: .green)
-        } label: {
-            Text("green")
-        }
-
+        
     }
     
     mutating func changeContent(){
@@ -52,19 +42,20 @@ struct IdentifiableView<Content: View>: View, Identifiable {
 }
 
 
-class ColorManager:ObservableObject{
-    @Published var color: Color
+class TabViewTypeManager:ObservableObject{
+    //    @Published var color: Color
+    @Published var tabViewType: TabViewType
     
-    init(color: Color) {
-        self.color = color
+    init(tabType:TabViewType) {
+        self.tabViewType = tabType
     }
     
-    func getColor() -> Color{
-        return color
+    func getTabType() -> TabViewType{
+        return tabViewType
     }
     
-    func changeColor(color:Color){
-        self.color = color
+    func changeTabType(tabViewType:TabViewType){
+        self.tabViewType = tabViewType
     }
 }
 
@@ -74,12 +65,9 @@ class ColorManager:ObservableObject{
 class TabDataManager: ObservableObject{
     @Published var TabDataList: [IdentifiableView<AnyView>]
     @Published var selectedTab: UUID? = nil
-
+    
     init() {
-        self.TabDataList = [
-            IdentifiableView(title: "tab1", colorManager: ColorManager(color: .red)) { AnyView(NewTabView()) },
-            IdentifiableView(title: "tab2", colorManager: ColorManager(color: .green)) { AnyView(NewTabView()) }
-        ]
+        self.TabDataList = []
     }
     
     func setSelectedTab(id: UUID?) {
@@ -152,10 +140,10 @@ class TabDataManager: ObservableObject{
 
 
 enum TabViewType{
-    case homeView
-    case labelingView
-    case displayView
+    case newTabView
+    case labelingTabView
+    case displayTabView
     init(){
-        self = .homeView
+        self = .newTabView
     }
 }

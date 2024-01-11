@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct LabelingView: View {
+    @State var textFiledcontent = ""
+    
     var body: some View {
         VStack{
             Text("labeling view")
+            TextField("",text:$textFiledcontent)
         }
         .frame(maxWidth: .infinity,maxHeight: .infinity)
         .background(.red)

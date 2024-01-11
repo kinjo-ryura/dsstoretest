@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct NewTabView: View {
-    
+    @ObservedObject var tabViewTypeManager:TabViewTypeManager
     
     var body: some View {
         VStack{
-            //            switch tabViewType{
-            //            case .homeView:
-            //                HomeView(viewType: $tabViewType)
-            //            case .labelingView:
-            //                LabelingView()
-            //            case .displayView:
-            //                DisplayView()
-//        }
-            Text("newtab")
+            Button {
+                tabViewTypeManager.changeTabType(tabViewType: .labelingTabView)
+            } label: {
+                Text("labeling")
+            }
+            Button {
+                tabViewTypeManager.changeTabType(tabViewType: .displayTabView)
+            } label: {
+                Text("display")
+            }
 
-            
         }.frame(maxWidth: .infinity,maxHeight: .infinity)
             .clipShape(.rect(
                 topLeadingRadius: 8,
