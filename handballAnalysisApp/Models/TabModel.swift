@@ -8,17 +8,15 @@
 import SwiftUI
 import Combine
 
-struct IdentifiableView<Content: View>: View, Identifiable {
+struct IdentifiableView: View, Identifiable {
     let id: UUID
     var title: String
-    var content: Content
     @ObservedObject var tabViewDataManager: TabViewDataManager
     
-    init(title: String,tabViewDataManager: TabViewDataManager, @ViewBuilder content: () -> Content) {
+    init(title: String,tabViewDataManager: TabViewDataManager) {
         self.id = UUID()
         self.title = title
         self.tabViewDataManager = tabViewDataManager
-        self.content = content()
     }
     
     var body: some View {
@@ -63,7 +61,7 @@ class TabViewDataManager:ObservableObject{
 
 
 class TabListManager: ObservableObject{
-    @Published var TabDataList: [IdentifiableView<AnyView>]
+    @Published var TabDataList: [IdentifiableView]
     @Published var selectedTab: UUID? = nil
     
     init() {
@@ -75,7 +73,7 @@ class TabListManager: ObservableObject{
     }
     
     //選択されているタブのcontentを取得する
-    func getSelectedTabContent() -> IdentifiableView<AnyView>? {
+    func getSelectedTabContent() -> IdentifiableView? {
         guard let selectedTabId = selectedTab else {
             return nil  // 選択されているタブがない場合
         }
@@ -131,7 +129,7 @@ class TabListManager: ObservableObject{
     }
     
     //新たなTabDataを追加する
-    func addTabData(tabData: IdentifiableView<AnyView>) {
+    func addTabData(tabData: IdentifiableView) {
         TabDataList.append(tabData)
         setSelectedTab(id: tabData.id)
     }

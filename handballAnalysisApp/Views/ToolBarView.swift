@@ -61,9 +61,8 @@ struct toolBar: View{
                         }
                         .onTapGesture {
                             let tabTypeManager = TabViewDataManager(tabType: TabViewType())
-                            let newTab = IdentifiableView(title: "tab2", tabViewDataManager: tabTypeManager) { AnyView(NewTabView(tabViewTypeManager: tabTypeManager)) }
+                            let newTab = IdentifiableView(title: "tab2", tabViewDataManager: tabTypeManager)
                             TabListManager.addTabData(tabData: newTab)
-//                            TabListManager.addNewTabData()
                         }
                     
                 }
