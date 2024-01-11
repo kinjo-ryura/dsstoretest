@@ -10,7 +10,7 @@ import SwiftUI
 
 struct toolBar: View{
     @ObservedObject var windowDelegate: WindowDelegate
-    @ObservedObject var tabDataManager: TabDataManager
+    @ObservedObject var TabListManager: TabListManager
     @Binding var toolBarStatus: Bool
     let geometry: GeometryProxy
     @State var activeTab: Int = 1
@@ -35,11 +35,11 @@ struct toolBar: View{
                 
             }
             HStack(spacing: 0){
-                toolBarDivder(id: nil, tabDataManager:_tabDataManager)
-                ForEach(Array(tabDataManager.TabDataList.indices), id: \.self) { index in
-                    toolBarTab(id: tabDataManager.TabDataList[index].id, tabDataManager:_tabDataManager, icon: "figure.handball")
+                toolBarDivder(id: nil, TabListManager:_TabListManager)
+                ForEach(Array(TabListManager.TabDataList.indices), id: \.self) { index in
+                    toolBarTab(id: TabListManager.TabDataList[index].id, TabListManager:_TabListManager, icon: "figure.handball")
                         .frame(maxWidth: 180)
-                    toolBarDivder(id: tabDataManager.TabDataList[index].id, tabDataManager:_tabDataManager)
+                    toolBarDivder(id: TabListManager.TabDataList[index].id, TabListManager:_TabListManager)
                 }
                 ZStack{
                     Rectangle()
@@ -60,10 +60,10 @@ struct toolBar: View{
                             plusIsHovering = hovering
                         }
                         .onTapGesture {
-                            let tabTypeManager = TabViewTypeManager(tabType: TabViewType())
-                            let newTab = IdentifiableView(title: "tab2", tabViewTypeManager: tabTypeManager) { AnyView(NewTabView(tabViewTypeManager: tabTypeManager)) }
-                            tabDataManager.addTabData(tabData: newTab)
-//                            tabDataManager.addNewTabData()
+                            let tabTypeManager = TabViewDataManager(tabType: TabViewType())
+                            let newTab = IdentifiableView(title: "tab2", tabViewDataManager: tabTypeManager) { AnyView(NewTabView(tabViewTypeManager: tabTypeManager)) }
+                            TabListManager.addTabData(tabData: newTab)
+//                            TabListManager.addNewTabData()
                         }
                     
                 }
@@ -77,13 +77,13 @@ struct toolBar: View{
 
 struct toolBarDivder: View {
     let id: UUID?
-    @ObservedObject var tabDataManager: TabDataManager
+    @ObservedObject var TabListManager: TabListManager
     let primaryColor = Color(red: 0.04, green: 0.1, blue: 0.2)
     let secondaryColor = Color(red: 0.11, green: 0.2, blue: 0.36)
     
-    init(id: UUID?, tabDataManager: ObservedObject<TabDataManager>) {
+    init(id: UUID?, TabListManager: ObservedObject<TabListManager>) {
         self.id = id
-        self._tabDataManager = tabDataManager
+        self._TabListManager = TabListManager
     }
     
     var body: some View {
@@ -92,15 +92,15 @@ struct toolBarDivder: View {
             Rectangle().fill(primaryColor).frame(width: 10)
                 .clipShape(.rect(
                     topLeadingRadius: 0,
-                    bottomLeadingRadius: tabDataManager.isSelectedTab(id: id) ? 7:0,
-                    bottomTrailingRadius: tabDataManager.isNextSelectedTab(id: id) ? 7:0,
+                    bottomLeadingRadius: TabListManager.isSelectedTab(id: id) ? 7:0,
+                    bottomTrailingRadius: TabListManager.isNextSelectedTab(id: id) ? 7:0,
                     topTrailingRadius: 0
                 ))
 
             //最初のdividerだけは常に表示しない
             if let id{
                 //タブと次のタブが選択されていない時だけ表示する
-                if !tabDataManager.isSelectedTab(id: id) && !tabDataManager.isNextSelectedTab(id: id){
+                if !TabListManager.isSelectedTab(id: id) && !TabListManager.isNextSelectedTab(id: id){
                     Rectangle()
                         .fill(secondaryColor)
                         .frame(width: 1.5, height: 16)
@@ -112,7 +112,7 @@ struct toolBarDivder: View {
 
 struct toolBarTab: View {
     let id: UUID
-    @ObservedObject var tabDataManager:TabDataManager
+    @ObservedObject var TabListManager:TabListManager
     let icon:String
     let primaryColor = Color(red: 0.04, green: 0.1, blue: 0.2)
     let secondaryColor = Color(red: 0.11, green: 0.2, blue: 0.36)
@@ -123,16 +123,16 @@ struct toolBarTab: View {
     
     
     
-    init(id: UUID, tabDataManager: ObservedObject<TabDataManager>, icon: String) {
+    init(id: UUID, TabListManager: ObservedObject<TabListManager>, icon: String) {
         self.id = id
-        self._tabDataManager = tabDataManager
+        self._TabListManager = TabListManager
         self.icon = icon
     }
     
     var body: some View {
         ZStack{
             Rectangle()
-                .fill(tabDataManager.isSelectedTab(id: id) ? secondaryColor:primaryColor)
+                .fill(TabListManager.isSelectedTab(id: id) ? secondaryColor:primaryColor)
             //                .frame(width: 180,height: 33)
                 .frame(height: 33)
                 .clipShape(.rect(
@@ -145,7 +145,7 @@ struct toolBarTab: View {
             HStack{
                 Image(systemName: icon)
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
-                Text(tabDataManager.getContentTitle(id: id))
+                Text(TabListManager.getContentTitle(id: id))
                 Spacer()
                 ZStack{
                     Rectangle()
@@ -164,7 +164,7 @@ struct toolBarTab: View {
                             xmarkIshovering = hovering
                         })
                         .onTapGesture {
-                            tabDataManager.removeTabData(id: id)
+                            TabListManager.removeTabData(id: id)
                         }
                 }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 5))
             }
@@ -172,7 +172,7 @@ struct toolBarTab: View {
             .foregroundStyle(.white)
             //            .frame(width: 180,height: 28)
             .frame(maxWidth: .infinity,maxHeight:28)
-            .background(tabDataManager.isSelectedTab(id: id) ? secondaryColor:
+            .background(TabListManager.isSelectedTab(id: id) ? secondaryColor:
                             ishovering ? hoverColor:primaryColor
             )
             .clipShape(.rect(
@@ -185,7 +185,7 @@ struct toolBarTab: View {
                 ishovering = hovering
             })
             .onTapGesture {
-                tabDataManager.setSelectedTab(id: id)
+                TabListManager.setSelectedTab(id: id)
             }
         }.frame(maxWidth: .infinity)
     }

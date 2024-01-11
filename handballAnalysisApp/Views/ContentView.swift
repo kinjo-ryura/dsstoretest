@@ -12,14 +12,14 @@ let secondaryColor = Color(red: 0.11, green: 0.2, blue: 0.36)
 
 struct ContentView: View {
     @ObservedObject var windowDelegate: WindowDelegate
-    @ObservedObject var tabDataManager = TabDataManager()
+    @ObservedObject var tabListManager = TabListManager()
     @State var toolBarStatus = false
     var mouseLocation: NSPoint { NSEvent.mouseLocation }
     
     var body: some View {
         GeometryReader{geometry in
             VStack {
-                if let selectedView = tabDataManager.getSelectedTabContent(){
+                if let selectedView = tabListManager.getSelectedTabContent(){
                     selectedView
                 }else{
                     EmptyView()
@@ -42,7 +42,7 @@ struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigation) {
-                    toolBar(windowDelegate: windowDelegate, tabDataManager: tabDataManager, toolBarStatus: $toolBarStatus, geometry: geometry)
+                    toolBar(windowDelegate: windowDelegate, TabListManager: tabListManager, toolBarStatus: $toolBarStatus, geometry: geometry)
                 }
             }
         }

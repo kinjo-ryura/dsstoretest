@@ -12,42 +12,42 @@ struct IdentifiableView<Content: View>: View, Identifiable {
     let id: UUID
     var title: String
     var content: Content
-    @ObservedObject var tabViewTypeManager: TabViewTypeManager
+    @ObservedObject var tabViewDataManager: TabViewDataManager
     
-    init(title: String,tabViewTypeManager: TabViewTypeManager, @ViewBuilder content: () -> Content) {
+    init(title: String,tabViewDataManager: TabViewDataManager, @ViewBuilder content: () -> Content) {
         self.id = UUID()
         self.title = title
-        self.tabViewTypeManager = tabViewTypeManager
+        self.tabViewDataManager = tabViewDataManager
         self.content = content()
     }
     
     var body: some View {
-        switch tabViewTypeManager.getTabType() {
+        switch tabViewDataManager.getTabType() {
         case .newTabView:
-            NewTabView(tabViewTypeManager: tabViewTypeManager)
+            NewTabView(tabViewTypeManager: tabViewDataManager)
         case .labelingTabView:
-            LabelingView()
+            LabelingView(tabViewDataManager: tabViewDataManager)
         case .displayTabView:
             DisplayView()
         }
-        
-    }
-    
-    mutating func changeContent(){
-        print("changeview")
-        self.content = AnyView(
-            HomeView()
-        ) as! Content
     }
 }
 
 
-class TabViewTypeManager:ObservableObject{
-    //    @Published var color: Color
+class TabViewDataManager:ObservableObject{
+    @Published var text: String = ""
     @Published var tabViewType: TabViewType
     
     init(tabType:TabViewType) {
         self.tabViewType = tabType
+    }
+    
+    func getText() -> String{
+        return text
+    }
+    
+    func changeText(text:String){
+        self.text = text
     }
     
     func getTabType() -> TabViewType{
@@ -62,7 +62,7 @@ class TabViewTypeManager:ObservableObject{
 
 
 
-class TabDataManager: ObservableObject{
+class TabListManager: ObservableObject{
     @Published var TabDataList: [IdentifiableView<AnyView>]
     @Published var selectedTab: UUID? = nil
     

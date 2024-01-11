@@ -8,12 +8,23 @@
 import SwiftUI
 
 struct LabelingView: View {
-    @State var textFiledcontent = ""
+    @ObservedObject var tabViewDataManager:TabViewDataManager
     
     var body: some View {
         VStack{
-            Text("labeling view")
-            TextField("",text:$textFiledcontent)
+            Text(tabViewDataManager.getText())
+            Button {
+                tabViewDataManager.changeText(text: "write")
+            } label: {
+                Text("write")
+            }
+            Button {
+                tabViewDataManager.changeText(text: "non")
+            } label: {
+                Text("non")
+            }
+
+            
         }
         .frame(maxWidth: .infinity,maxHeight: .infinity)
         .background(.red)

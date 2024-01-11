@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NewTabView: View {
-    @ObservedObject var tabViewTypeManager:TabViewTypeManager
+    @ObservedObject var tabViewTypeManager:TabViewDataManager
     
     var body: some View {
         VStack{
