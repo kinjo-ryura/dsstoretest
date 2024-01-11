@@ -6,35 +6,12 @@
 //
 
 import SwiftUI
-import Combine
 
-struct IdentifiableView: View, Identifiable {
-    let id: UUID
-    var title: String
-    @ObservedObject var tabViewDataManager: TabViewDataManager
-    
-    init(title: String,tabViewDataManager: TabViewDataManager) {
-        self.id = UUID()
-        self.title = title
-        self.tabViewDataManager = tabViewDataManager
-    }
-    
-    var body: some View {
-        switch tabViewDataManager.getTabType() {
-        case .newTabView:
-            NewTabView(tabViewTypeManager: tabViewDataManager)
-        case .labelingTabView:
-            LabelingView(tabViewDataManager: tabViewDataManager)
-        case .displayTabView:
-            DisplayView()
-        }
-    }
-}
-
-
+//それぞれのタブのデータを独立で持つ
 class TabViewDataManager:ObservableObject{
     @Published var text: String = ""
     @Published var tabViewType: TabViewType
+    
     
     init(tabType:TabViewType) {
         self.tabViewType = tabType
@@ -59,9 +36,10 @@ class TabViewDataManager:ObservableObject{
 
 
 
-
+//全てのタブを管理する
+//選択されているタブを記憶する
 class TabListManager: ObservableObject{
-    @Published var TabDataList: [IdentifiableView]
+    @Published var TabDataList: [MainView]
     @Published var selectedTab: UUID? = nil
     
     init() {
@@ -73,7 +51,7 @@ class TabListManager: ObservableObject{
     }
     
     //選択されているタブのcontentを取得する
-    func getSelectedTabContent() -> IdentifiableView? {
+    func getSelectedTabContent() -> MainView? {
         guard let selectedTabId = selectedTab else {
             return nil  // 選択されているタブがない場合
         }
@@ -129,7 +107,7 @@ class TabListManager: ObservableObject{
     }
     
     //新たなTabDataを追加する
-    func addTabData(tabData: IdentifiableView) {
+    func addTabData(tabData: MainView) {
         TabDataList.append(tabData)
         setSelectedTab(id: tabData.id)
     }

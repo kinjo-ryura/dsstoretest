@@ -17,6 +17,14 @@
 		739548692B4EA37E007530B3 /* NewTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548682B4EA37E007530B3 /* NewTabView.swift */; };
 		7395486B2B4EA74F007530B3 /* LabelingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7395486A2B4EA74F007530B3 /* LabelingView.swift */; };
 		7395486D2B4EA75A007530B3 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7395486C2B4EA75A007530B3 /* DisplayView.swift */; };
+		7395488E2B4FCCBA007530B3 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7395488D2B4FCCBA007530B3 /* MainView.swift */; };
+		739548912B4FDD32007530B3 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548902B4FDD32007530B3 /* VideoView.swift */; };
+		739548932B4FDD54007530B3 /* HandballCourtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548922B4FDD54007530B3 /* HandballCourtView.swift */; };
+		739548952B4FDD83007530B3 /* TeamMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548942B4FDD83007530B3 /* TeamMemberView.swift */; };
+		739548972B4FDDDC007530B3 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548962B4FDDDC007530B3 /* ResultView.swift */; };
+		739548992B4FDE02007530B3 /* HandballGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548982B4FDE02007530B3 /* HandballGoalView.swift */; };
+		7395489B2B4FE182007530B3 /* LabelingRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7395489A2B4FE182007530B3 /* LabelingRecord.swift */; };
+		7395489D2B501210007530B3 /* TeamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7395489C2B501210007530B3 /* TeamModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +40,14 @@
 		739548682B4EA37E007530B3 /* NewTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabView.swift; sourceTree = "<group>"; };
 		7395486A2B4EA74F007530B3 /* LabelingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelingView.swift; sourceTree = "<group>"; };
 		7395486C2B4EA75A007530B3 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
+		7395488D2B4FCCBA007530B3 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		739548902B4FDD32007530B3 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		739548922B4FDD54007530B3 /* HandballCourtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandballCourtView.swift; sourceTree = "<group>"; };
+		739548942B4FDD83007530B3 /* TeamMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamMemberView.swift; sourceTree = "<group>"; };
+		739548962B4FDDDC007530B3 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		739548982B4FDE02007530B3 /* HandballGoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandballGoalView.swift; sourceTree = "<group>"; };
+		7395489A2B4FE182007530B3 /* LabelingRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelingRecord.swift; sourceTree = "<group>"; };
+		7395489C2B501210007530B3 /* TeamModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				739548642B4EA2CC007530B3 /* TabModel.swift */,
+				7395489C2B501210007530B3 /* TeamModel.swift */,
+				7395489A2B4FE182007530B3 /* LabelingRecord.swift */,
 				739548662B4EA332007530B3 /* WindowDelegate.swift */,
 			);
 			path = Models;
@@ -95,12 +113,26 @@
 			isa = PBXGroup;
 			children = (
 				739548532B4EA0D6007530B3 /* ContentView.swift */,
+				7395488D2B4FCCBA007530B3 /* MainView.swift */,
 				739548622B4EA260007530B3 /* ToolBarView.swift */,
 				739548682B4EA37E007530B3 /* NewTabView.swift */,
-				7395486A2B4EA74F007530B3 /* LabelingView.swift */,
+				7395488F2B4FDCF3007530B3 /* LabelingViews */,
 				7395486C2B4EA75A007530B3 /* DisplayView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		7395488F2B4FDCF3007530B3 /* LabelingViews */ = {
+			isa = PBXGroup;
+			children = (
+				7395486A2B4EA74F007530B3 /* LabelingView.swift */,
+				739548902B4FDD32007530B3 /* VideoView.swift */,
+				739548922B4FDD54007530B3 /* HandballCourtView.swift */,
+				739548942B4FDD83007530B3 /* TeamMemberView.swift */,
+				739548962B4FDDDC007530B3 /* ResultView.swift */,
+				739548982B4FDE02007530B3 /* HandballGoalView.swift */,
+			);
+			path = LabelingViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,14 +205,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7395489B2B4FE182007530B3 /* LabelingRecord.swift in Sources */,
 				739548692B4EA37E007530B3 /* NewTabView.swift in Sources */,
+				7395489D2B501210007530B3 /* TeamModel.swift in Sources */,
+				7395488E2B4FCCBA007530B3 /* MainView.swift in Sources */,
 				739548632B4EA260007530B3 /* ToolBarView.swift in Sources */,
+				739548992B4FDE02007530B3 /* HandballGoalView.swift in Sources */,
 				7395486B2B4EA74F007530B3 /* LabelingView.swift in Sources */,
 				739548652B4EA2CC007530B3 /* TabModel.swift in Sources */,
 				739548672B4EA332007530B3 /* WindowDelegate.swift in Sources */,
+				739548912B4FDD32007530B3 /* VideoView.swift in Sources */,
+				739548972B4FDDDC007530B3 /* ResultView.swift in Sources */,
 				7395486D2B4EA75A007530B3 /* DisplayView.swift in Sources */,
 				739548542B4EA0D6007530B3 /* ContentView.swift in Sources */,
+				739548952B4FDD83007530B3 /* TeamMemberView.swift in Sources */,
 				739548522B4EA0D6007530B3 /* handballAnalysisApp.swift in Sources */,
+				739548932B4FDD54007530B3 /* HandballCourtView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

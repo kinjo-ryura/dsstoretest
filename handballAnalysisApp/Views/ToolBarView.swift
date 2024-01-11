@@ -8,23 +8,21 @@
 import SwiftUI
 
 
+
+
 struct toolBar: View{
     @ObservedObject var windowDelegate: WindowDelegate
     @ObservedObject var TabListManager: TabListManager
     @Binding var toolBarStatus: Bool
     let geometry: GeometryProxy
-    @State var activeTab: Int = 1
-    let primaryColor = Color(red: 0.04, green: 0.1, blue: 0.2)
-    let plusHoverColor = Color(red: 0.2, green: 0.25, blue: 0.32)
     @State var plusIsHovering: Bool = false
     
     var body: some View{
         ZStack{
             if windowDelegate.isFullScreen{
                 Rectangle()
-                //                    .fill(primaryColor)
-                    .fill(.red)
-                    .frame(width: toolBarStatus ? geometry.size.width:geometry.size.width+70)
+                    .fill(primaryColor)
+                    .frame(width: toolBarStatus ? geometry.size.width:geometry.size.width+70,height: 40)
                     .padding(EdgeInsets(top: 0, leading: -80, bottom: 0, trailing:-8))
                 
             }else{
@@ -61,10 +59,14 @@ struct toolBar: View{
                         }
                         .onTapGesture {
                             let tabTypeManager = TabViewDataManager(tabType: TabViewType())
-                            let newTab = IdentifiableView(title: "tab2", tabViewDataManager: tabTypeManager)
+                            let newTab = MainView(
+                                title: "tab2",
+                                tabViewDataManager: tabTypeManager,
+                                labelingRecordListManager: LabelingRecordListManager(),
+                                teamDataManager: TeamDataManager()
+                            )
                             TabListManager.addTabData(tabData: newTab)
                         }
-                    
                 }
                 Spacer()
             }
@@ -77,8 +79,6 @@ struct toolBar: View{
 struct toolBarDivder: View {
     let id: UUID?
     @ObservedObject var TabListManager: TabListManager
-    let primaryColor = Color(red: 0.04, green: 0.1, blue: 0.2)
-    let secondaryColor = Color(red: 0.11, green: 0.2, blue: 0.36)
     
     init(id: UUID?, TabListManager: ObservedObject<TabListManager>) {
         self.id = id
@@ -113,10 +113,6 @@ struct toolBarTab: View {
     let id: UUID
     @ObservedObject var TabListManager:TabListManager
     let icon:String
-    let primaryColor = Color(red: 0.04, green: 0.1, blue: 0.2)
-    let secondaryColor = Color(red: 0.11, green: 0.2, blue: 0.36)
-    let hoverColor = Color(red: 0.06, green: 0.15, blue: 0.26)
-    let xmarkHoverColor = Color(red: 0.22, green: 0.28, blue: 0.38)
     @State var ishovering: Bool = false
     @State var xmarkIshovering: Bool = false
     
