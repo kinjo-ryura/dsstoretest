@@ -32,13 +32,31 @@ struct MainView: View, Identifiable {
         switch tabViewDataManager.getTabType() {
         case .newTabView:
             NewTabView(tabViewTypeManager: tabViewDataManager)
+                .background(secondaryColor)
+                .clipShape(
+                    .rect(topLeadingRadius: 10,
+                          topTrailingRadius: 10
+                    )
+                )
         case .labelingTabView:
-            LabelingView(tabViewDataManager: tabViewDataManager, 
-                         labelingRecordListManager: labelingRecordListManager,
-                         teamDataManager: teamDataManager
+            LabelingView(
+                labelingRecordListManager: labelingRecordListManager,
+                teamDataManager: teamDataManager
+            )
+            .background(secondaryColor)
+            .clipShape(
+                .rect(topLeadingRadius: 10,
+                      topTrailingRadius: 10
+                     )
             )
         case .displayTabView:
             DisplayView()
+                .background(secondaryColor)
+                .clipShape(
+                    .rect(topLeadingRadius: 10,
+                          topTrailingRadius: 10
+                         )
+                )
         }
     }
 }

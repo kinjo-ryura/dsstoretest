@@ -8,10 +8,14 @@
 import SwiftUI
 
 let primaryColor = Color(red: 0.04, green: 0.1, blue: 0.2)
-let secondaryColor = Color(red: 0.11, green: 0.2, blue: 0.36)
+let secondaryColor = Color(red: 0.10, green: 0.21, blue: 0.36)
+let thirdColor = Color(red: 0.28, green: 0.36, blue: 0.51)
 let hoverColor = Color(red: 0.06, green: 0.15, blue: 0.26)
 let plusHoverColor = Color(red: 0.2, green: 0.25, blue: 0.32)
 let xmarkHoverColor = Color(red: 0.22, green: 0.28, blue: 0.38)
+let HandballCourtColor = Color(red:0.16, green:0.16, blue:0.16)
+let blueWhite = Color(red: 0.89, green: 0.9, blue: 0.91)
+let handballGoalRed = Color(red: 0.85, green: 0.32, blue: 0.25)
 
 struct ContentView: View {
     @ObservedObject var windowDelegate: WindowDelegate

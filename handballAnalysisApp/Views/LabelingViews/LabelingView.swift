@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct LabelingView: View {
-    @ObservedObject var tabViewDataManager:TabViewDataManager
     @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
     
@@ -18,12 +17,17 @@ struct LabelingView: View {
                 VideoView()
                 HandballCourtView()
             }
+            .padding(EdgeInsets(top: 38,//なぜか上が飛び出るのでtoolbar分だけ下げる
+                                 leading: 0,
+                                 bottom: 0,
+                                 trailing: 0))
             HSplitView{
                 TeamMemberView(teamDataManager: teamDataManager)
                 ResultView()
                 HandballGoalView()
             }
         }
+        .background(thirdColor)
         .frame(maxWidth: .infinity,maxHeight: .infinity)
     }
 }

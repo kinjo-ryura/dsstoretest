@@ -10,10 +10,17 @@ import SwiftUI
 struct ResultView: View {
     var body: some View {
         VStack{
-            Text("result view")
+            Spacer()
+            Spacer()
+            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+            Spacer()
+            Spacer()
+            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+            Spacer()
+            Spacer()
         }
         .frame(maxWidth: .infinity,maxHeight: .infinity)
-        .background(.pink)
+        .background(secondaryColor)
     }
 }
 

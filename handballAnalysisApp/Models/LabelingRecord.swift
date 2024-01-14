@@ -91,8 +91,8 @@ class LabelingRecordListManager: ObservableObject {
     @Published var labelingRecordList: [LabelingRecord]
     @Published var temporaryLabelingRecord: LabelingRecord
     @Published var csvPath:String? = nil
-    @Published var team1score:Int? = nil
-    @Published var team2score:Int? = nil
+//    @Published var team1score:Int? = nil
+//    @Published var team2score:Int? = nil
     
     init(){
         self.labelingRecordList = []
@@ -143,7 +143,7 @@ class LabelingRecordListManager: ObservableObject {
                 print(error)
             }
         }
-        self.calScoreboard()
+//        self.calScoreboard()
     }
     
     func reloadCsv(){
@@ -217,18 +217,18 @@ class LabelingRecordListManager: ObservableObject {
         }
         
     }
-    
-    func calScoreboard(){
-        var team1 = 0
-        var team2 = 0
-        for record in self.labelingRecordList{
-            if record.result == "+1"{
-                team1 += 1
-            }else if record.result == "-1"{
-                team2 += 1
-            }
-        }
-        team1score = team1
-        team2score = team2
-    }
+//    
+//    func calScoreboard(){
+//        var team1 = 0
+//        var team2 = 0
+//        for record in self.labelingRecordList{
+//            if record.result == "+1"{
+//                team1 += 1
+//            }else if record.result == "-1"{
+//                team2 += 1
+//            }
+//        }
+//        team1score = team1
+//        team2score = team2
+//    }
 }

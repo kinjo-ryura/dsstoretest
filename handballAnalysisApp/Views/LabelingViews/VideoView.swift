@@ -11,9 +11,10 @@ struct VideoView: View {
     var body: some View {
         VStack{
             Text("video view")
+            Spacer()
         }
         .frame(maxWidth: .infinity,maxHeight: .infinity)
-        .background(.blue)
+        .background(secondaryColor)
     }
 }
 

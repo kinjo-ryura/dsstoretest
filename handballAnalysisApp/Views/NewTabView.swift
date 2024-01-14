@@ -22,6 +22,7 @@ struct NewTabView: View {
             } label: {
                 Text("display")
             }
+            Spacer()
 
         }.frame(maxWidth: .infinity,maxHeight: .infinity)
             .clipShape(.rect(
