@@ -42,7 +42,7 @@ struct HandballGoalView: View {
                         let width = canvasWidth/5 * 0.2
                         let height = canvasWidth/5 * 0.08
                         let goalpostWhite = CGRect(x: x, y: y, width: width, height: height)
-                        context.fill(Path(goalpostWhite), with: .color(blueWhite))
+                        context.fill(Path(goalpostWhite), with: .color(handballGoalWhite))
                     }
                     
                     (1...5).forEach { sidebar in
@@ -51,10 +51,10 @@ struct HandballGoalView: View {
                         let width = canvasWidth/5 * 0.08
                         let height = canvasWidth/5 * 0.2
                         var goalpostWhite = CGRect(x: x, y: y, width: width, height: height)
-                        context.fill(Path(goalpostWhite), with: .color(blueWhite))
+                        context.fill(Path(goalpostWhite), with: .color(handballGoalWhite))
                         x = canvasWidth/5 * 4
                         goalpostWhite = CGRect(x: x, y: y, width: width, height: height)
-                        context.fill(Path(goalpostWhite), with: .color(blueWhite))
+                        context.fill(Path(goalpostWhite), with: .color(handballGoalWhite))
                     }
                     
                     

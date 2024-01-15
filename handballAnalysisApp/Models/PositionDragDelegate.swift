@@ -44,4 +44,23 @@ enum Position{
     case centerBack
     case pivot
     case nonPosition
+    
+    func description() -> String?{
+        switch self {
+        case .leftWing:
+            return "左サイド"
+        case .rightWing:
+            return "右サイド"
+        case .leftBack:
+            return "左４５"
+        case .rightBack:
+            return "右４５"
+        case .centerBack:
+            return "センター"
+        case .pivot:
+            return "ポスト"
+        case .nonPosition:
+            return nil
+        }
+    }
 }

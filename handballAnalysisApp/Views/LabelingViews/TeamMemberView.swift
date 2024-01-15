@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct TeamMemberView: View {
-    //    @ObservedObject var labelingRecordListManager:LabelingRecordListManager
+    @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
     
     var body: some View {
@@ -17,16 +17,25 @@ struct TeamMemberView: View {
             ZStack{
                 TabView(selection: .constant(teamDataManager.getSelectedTab()),
                         content:{
-                    PlayerView(teamType: .leftTeam,teamDataManager: teamDataManager)
-                        .tabItem { Text(teamDataManager.getTeamName(teamType: .leftTeam)) }
-                        .tag(0)
-                    RegisterTeamView(teamDataManager: teamDataManager)
-                    //                .tabItem { Text("チーム登録") }
-                        .tabItem { Text("チーム登録").font(.largeTitle) }
-                        .tag(1)
-                    PlayerView(teamType: .rightTeam,teamDataManager: teamDataManager)
-                        .tabItem { Text(teamDataManager.getTeamName(teamType: .rightTeam)) }
-                        .tag(2)
+                    PlayerView(
+                        teamType: .leftTeam,
+                        labelingRecordListManager: labelingRecordListManager,
+                        teamDataManager: teamDataManager
+                    )
+                    .tabItem {}
+                    .tag(0)
+                    RegisterTeamView(
+                        teamDataManager: teamDataManager
+                    )
+                    .tabItem {}
+                    .tag(1)
+                    PlayerView(
+                        teamType: .rightTeam,
+                        labelingRecordListManager: labelingRecordListManager,
+                        teamDataManager: teamDataManager
+                    )
+                    .tabItem {}
+                    .tag(2)
                 })
                 .frame(maxWidth: .infinity,maxHeight: .infinity)
                 .background(secondaryColor)
@@ -91,46 +100,60 @@ struct TeamMemberView: View {
 
 struct PlayerView: View {
     let teamType: TeamType
+    @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
     
-    init(teamType: TeamType,teamDataManager: TeamDataManager) {
+    init(teamType: TeamType,labelingRecordListManager:LabelingRecordListManager,teamDataManager: TeamDataManager) {
         self.teamType = teamType
+        self.labelingRecordListManager = labelingRecordListManager
         self.teamDataManager = teamDataManager
     }
     
     var body: some View {
         VStack{
             Spacer()
-            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+            HStack{
+                let results = [
+                    Result.getPoint,
+                    Result.missShot,
+                    Result.intercept,
+                    Result.foul
+                ]
+                ForEach(results, id: \.self) {result in
+                    Button(role: .none,
+                           action: {labelingRecordListManager.setResultOfTemporaryRecord(result: result)},
+                           label: {Text(result.description())}
+                    )
+                }
+            }
             Spacer()
-            let players = [
-                ("左サイド",Position.leftWing),
-                ("ポスト",Position.pivot),
-                ("右サイド",Position.rightWing),
-                ("左45",Position.leftBack),
-                ("センター",Position.centerBack),
-                ("右45", Position.rightBack)
+            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
+            Spacer()
+            let positions = [
+                Position.leftWing,
+                Position.pivot,
+                Position.rightWing,
+                Position.leftBack,
+                Position.centerBack,
+                Position.rightBack
             ]
             LazyVGrid(columns: [
                 GridItem(.flexible(), spacing: 0),
                 GridItem(.flexible(), spacing: 0),
                 GridItem(.flexible(), spacing: 0),
             ], spacing: 10) {
-                ForEach(players, id: \.0) {title, position in
+                ForEach(positions, id: \.self) {position in
                     PlayerPositionButtom(
                         teamType:teamType,
-                        title: title,
                         player: nil,
-                        position:position ,
-                        teamDataManager: teamDataManager,
-                        clickAction: {},
-                        doubleClickAction: {},
-                        longPressAction: {}
+                        position: position,
+                        labelingRecordListManager: labelingRecordListManager,
+                        teamDataManager: teamDataManager
                     )
                 }
             }
             Spacer()
-            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
             Spacer()
             let playerList = teamDataManager.getPlayerList(teamType: teamType)
             LazyVGrid(columns: [
@@ -143,13 +166,10 @@ struct PlayerView: View {
                         !teamDataManager.playerHavePosition(teamType: teamType, playerName: player){
                         PlayerPositionButtom(
                             teamType:teamType,
-                            title: nil,
                             player:player,
                             position: .nonPosition,
-                            teamDataManager: teamDataManager,
-                            clickAction: {},
-                            doubleClickAction: {},
-                            longPressAction: {}
+                            labelingRecordListManager: labelingRecordListManager,
+                            teamDataManager: teamDataManager
                         )
                     }
                 }
@@ -162,7 +182,6 @@ struct PlayerView: View {
 }
 
 struct RegisterTeamView: View {
-    //    @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
     
     var body: some View {
@@ -190,7 +209,7 @@ struct RegisterTeamView: View {
                 }
             }
             Spacer()
-            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
             Spacer()
             Button {
                 teamDataManager.readTeamCsv(teamType: .rightTeam)
@@ -246,76 +265,55 @@ struct teamMemberTabDivider:View {
 
 
 struct PlayerPositionButtom: View {
+    @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @ObservedObject var teamDataManager:TeamDataManager
     let teamType:TeamType
-    let title: String?
+    //    let title: String?
     let player: String?
     let position: Position
-    var clickAction: () -> Void
-    var doubleClickAction: () -> Void
-    var longPressAction: () -> Void
     
     init(teamType:TeamType,
-         title:String?,
+         //         title:String?,
          player:String?,
          position:Position,
-         teamDataManager:TeamDataManager,
-         clickAction: @escaping () -> Void,
-         doubleClickAction: @escaping () -> Void,
-         longPressAction: @escaping () -> Void) {
+         labelingRecordListManager:LabelingRecordListManager,
+         teamDataManager:TeamDataManager
+    ){
         self.teamType = teamType
-        self.title = title
+        //        self.title = title
         self.player = player
         self.position = position
+        self.labelingRecordListManager = labelingRecordListManager
         self.teamDataManager = teamDataManager
-        self.clickAction = clickAction
-        self.doubleClickAction = doubleClickAction
-        self.longPressAction = longPressAction
     }
     
     var body: some View {
         VStack{
-            if let title{
+            if let title = position.description(){
                 Text(title)
                     .foregroundStyle(.white)
             }
-            let giveplayer = position == .nonPosition ? player ?? "": teamDataManager.getPositionPlayer(teamType: teamType, position: position)
+            let playerName = position == .nonPosition ? player ?? "": teamDataManager.getPositionPlayer(teamType: teamType, position: position)
             RoundedRectangle(cornerRadius: 5)
                 .fill(.white)
                 .frame(width: 60,height: 25)
                 .overlay(
-                    Text(giveplayer)
+                    Text(playerName)
                 )
                 .onDrag({
-                    NSItemProvider(object: giveplayer as NSItemProviderWriting)
+                    NSItemProvider(object: playerName as NSItemProviderWriting)
                 })
                 .onDrop(of: [UTType.text],
                         delegate: PositionDragDelegation(teamType: teamType,position: position,teamDataManager: teamDataManager))
                 .onTapGesture(count: 2) {
-                    //                        shooter = labelingPositionManager.getPlayer(position: position)
-                    self.doubleClickAction()
+                    labelingRecordListManager.setActionOfTemporaryRedord(action: playerName)
                 }
                 .onTapGesture {
-                    //                        passer = labelingPositionManager.getPlayer(position: position)
-                    self.clickAction()
+                    labelingRecordListManager.setAssistOfTemporaryRedord(assist: playerName)
                 }
                 .onLongPressGesture {
-                    //                    if passer == labelingPositionManager.getPlayer(position: position){
-                    //                        passer = ""
-                    //                    }
-                    //                    if shooter == labelingPositionManager.getPlayer(position: position){
-                    //                        shooter = ""
-                    //                    }
-                    self.longPressAction()
+                    //長押しでリセットするか迷っている
                 }
-            //                .onHover(perform: { hovering in
-            //                    if hovering{
-            //                    }
-            //////                        background = .black
-            ////                    }else{
-            //////                        background = .white
-            ////                    }
-            //                })
         }
     }
 }

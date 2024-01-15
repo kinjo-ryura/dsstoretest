@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct HandballCourtView: View {
+    @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @State var canvasWidth: CGFloat = 10
     @State var canvasHeight: CGFloat = 10
     var body: some View {
-        VStack{
             GeometryReader { geometory in
                 Canvas { context, size in
                     if geometory.size.width/geometory.size.height < 22/42 {
@@ -21,8 +21,7 @@ struct HandballCourtView: View {
                         canvasHeight = geometory.size.height
                         canvasWidth = canvasHeight*22/42
                     }
-                    var color: Color
-                    color = Color.red
+                    
                     //                switch marker {
                     //                case "pass":
                     //                    color = .yellow
@@ -31,6 +30,8 @@ struct HandballCourtView: View {
                     //                default:
                     //                    color = .red
                     //                }
+                    let marker = labelingRecordListManager.handballCourtMarkerType
+                    let color = marker.getColor()
                     
                     
                     let lines: [CGRect] = [
@@ -120,7 +121,6 @@ struct HandballCourtView: View {
                 //                    }
                 //            )
             }
-        }
         .background(secondaryColor)
         .frame(minWidth: 1, minHeight: 1)
     }

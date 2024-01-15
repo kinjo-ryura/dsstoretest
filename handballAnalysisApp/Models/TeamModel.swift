@@ -47,6 +47,7 @@ class TeamDataManager: ObservableObject {
         return selectedTab
     }
     
+    
     func setSelectedTab(select:Int){
         selectedTab = select
     }

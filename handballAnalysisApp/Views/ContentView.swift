@@ -14,7 +14,7 @@ let hoverColor = Color(red: 0.06, green: 0.15, blue: 0.26)
 let plusHoverColor = Color(red: 0.2, green: 0.25, blue: 0.32)
 let xmarkHoverColor = Color(red: 0.22, green: 0.28, blue: 0.38)
 let HandballCourtColor = Color(red:0.16, green:0.16, blue:0.16)
-let blueWhite = Color(red: 0.89, green: 0.9, blue: 0.91)
+let handballGoalWhite = Color(red: 0.89, green: 0.9, blue: 0.91)
 let handballGoalRed = Color(red: 0.85, green: 0.32, blue: 0.25)
 
 struct ContentView: View {

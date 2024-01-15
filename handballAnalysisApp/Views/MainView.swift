@@ -14,18 +14,21 @@ struct MainView: View, Identifiable {
     @ObservedObject var tabViewDataManager: TabViewDataManager
     @ObservedObject var labelingRecordListManager: LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
+    @ObservedObject var videoPlayerManaer:VideoPlayerManager
     
     
     init(title: String,
          tabViewDataManager: TabViewDataManager,
          labelingRecordListManager: LabelingRecordListManager,
-         teamDataManager: TeamDataManager
+         teamDataManager: TeamDataManager,
+         videoPlayerManaer:VideoPlayerManager
     ) {
         self.id = UUID()
         self.title = title
         self.tabViewDataManager = tabViewDataManager
         self.labelingRecordListManager = labelingRecordListManager
         self.teamDataManager = teamDataManager
+        self.videoPlayerManaer = videoPlayerManaer
     }
     
     var body: some View {
@@ -41,7 +44,8 @@ struct MainView: View, Identifiable {
         case .labelingTabView:
             LabelingView(
                 labelingRecordListManager: labelingRecordListManager,
-                teamDataManager: teamDataManager
+                teamDataManager: teamDataManager,
+                videoPlayerManager: videoPlayerManaer
             )
             .background(secondaryColor)
             .clipShape(

@@ -63,7 +63,8 @@ struct toolBar: View{
                                 title: "tab2",
                                 tabViewDataManager: tabTypeManager,
                                 labelingRecordListManager: LabelingRecordListManager(),
-                                teamDataManager: TeamDataManager()
+                                teamDataManager: TeamDataManager(),
+                                videoPlayerManaer: VideoPlayerManager()
                             )
                             TabListManager.addTabData(tabData: newTab)
                         }
