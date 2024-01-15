@@ -26,6 +26,11 @@ class VideoPlayerManager: ObservableObject{
         self.localvideoPlayer = LocalVideoPlayer()
     }
     
+    func seekToTime(value: Double) {
+        let newTime = CMTime(seconds: value, preferredTimescale: 1)
+        localvideoPlayer.player.seek(to: newTime)
+    }
+    
     func getVideoPlayer() -> AVPlayer{
         return localvideoPlayer.player
     }
@@ -47,14 +52,14 @@ class VideoPlayerManager: ObservableObject{
             let minutes = (totalSeconds % 3600) / 60
             let seconds = totalSeconds % 60
             
+            let timeString:String
             if hours > 0 {
-                localvideoPlayer.videoCurrentTimeString  = String(format: "%i:%02i:%02i", hours, minutes, seconds)
+                timeString  = String(format: "%i:%02i:%02i", hours, minutes, seconds)
             } else {
-                localvideoPlayer.videoCurrentTimeString  = String(format: "%02i:%02i", minutes, seconds)
+                timeString  = String(format: "%02i:%02i", minutes, seconds)
             }
-            if localvideoPlayer.isSliderEditing{
-                localvideoPlayer.videoCurrentTimeDouble = Double(timeInSeconds)
-            }
+            localvideoPlayer.videoCurrentTimeString = timeString
+            localvideoPlayer.videoCurrentTimeDouble = Double(timeInSeconds)
         }else{
             localvideoPlayer.videoCurrentTimeString = ""
         }
@@ -73,11 +78,14 @@ class VideoPlayerManager: ObservableObject{
                 let minutes = Int(totalSeconds.truncatingRemainder(dividingBy: 3600) / 60)
                 let seconds = Int(totalSeconds.truncatingRemainder(dividingBy: 60))
                 
-                let timeString = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-                localvideoPlayer.videoPlayTimeString = timeString
-                if localvideoPlayer.isSliderEditing{
-                    localvideoPlayer.videoPlayTimeDouble = Double(totalSeconds)
+                let timeString:String
+                if hours > 0 {
+                    timeString  = String(format: "%i:%02i:%02i", hours, minutes, seconds)
+                } else {
+                    timeString  = String(format: "%02i:%02i", minutes, seconds)
                 }
+                localvideoPlayer.videoPlayTimeString = timeString
+                localvideoPlayer.videoPlayTimeDouble = Double(totalSeconds)
                 print("変更したよ")
             }
         }

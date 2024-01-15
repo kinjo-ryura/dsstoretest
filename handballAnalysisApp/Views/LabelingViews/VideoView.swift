@@ -38,12 +38,24 @@ struct VideoView: View {
                 Text(videoPlayerManager.getCurrentTime())
                 Text(videoPlayerManager.getVideoPlayTime())
                 Slider(
-                    value: .constant(videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble),
+                    value: Binding(
+                        get: { self.videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble },
+                        set: { newValue in
+                            self.videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble = newValue
+                            if !self.videoPlayerManager.localvideoPlayer.isSliderEditing {
+                                self.videoPlayerManager.seekToTime(value: newValue)
+                            }
+                        }
+                    ),
                     in: 0...videoPlayerManager.localvideoPlayer.videoPlayTimeDouble,
                     onEditingChanged: { editing in
-                        videoPlayerManager.localvideoPlayer.isSliderEditing = editing
+                        self.videoPlayerManager.localvideoPlayer.isSliderEditing = editing
+                        if !editing {
+                            self.videoPlayerManager.seekToTime(value: self.videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble)
+                        }
                     }
-                ).background(videoPlayerManager.localvideoPlayer.isSliderEditing ? Color.blue : Color.red)
+                )
+                
             }
         }
         .frame(maxWidth: .infinity,maxHeight: .infinity)
