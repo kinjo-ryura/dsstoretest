@@ -58,13 +58,11 @@ struct toolBar: View{
                             plusIsHovering = hovering
                         }
                         .onTapGesture {
-                            let tabTypeManager = TabViewDataManager(tabType: TabViewType())
                             let id = UUID()
                             let newTab = MainView(
                                 id:id,
                                 title: "新規タブ",
                                 tabViewType: .newTabView,
-                                tabViewDataManager: tabTypeManager,
                                 labelingRecordListManager: LabelingRecordListManager(id:id),
                                 teamDataManager: TeamDataManager(id:id),
                                 videoPlayerManaer: VideoPlayerManager(id:id)
@@ -139,7 +137,7 @@ struct toolBarTab: View {
                 ))
                 .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
             HStack{
-                Image(systemName: TabListManager.getContentTabViewType(id: id).getTabIcon())
+                Image(systemName:TabListManager.getTabType(id: id).getTabIcon())
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
                 Text(TabListManager.getContentTitle(id: id))
                 Spacer()

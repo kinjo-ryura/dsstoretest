@@ -7,27 +7,6 @@
 
 import SwiftUI
 
-//それぞれのタブのデータを独立で持つ
-class TabViewDataManager:ObservableObject{
-    @Published var tabViewType: TabViewType
-    
-    
-    init(tabType:TabViewType) {
-        self.tabViewType = tabType
-    }
-
-    func getTabType() -> TabViewType{
-        return tabViewType
-    }
-    
-    func changeTabType(tabViewType:TabViewType){
-        self.tabViewType = tabViewType
-    }
-}
-
-
-
-//全てのタブを管理する
 //選択されているタブを記憶する
 class TabListManager: ObservableObject{
     @Published var TabDataList: [MainView]
@@ -39,6 +18,16 @@ class TabListManager: ObservableObject{
     
     func setSelectedTab(id: UUID?) {
         selectedTab = id
+    }
+    
+    //選択されているタブのタブタイプを取得
+    func getTabType(id:UUID) -> TabViewType{
+        if let index = TabDataList.firstIndex(
+            where:{ $0.id == id }){
+            return TabDataList[index].tabViewType
+        }else{
+            return TabViewType.newTabView
+        }
     }
     
     //選択されているタブのタブタイプを設定する
@@ -76,11 +65,12 @@ class TabListManager: ObservableObject{
     }
     
     //選択されているタブのtabViewTypeを取得する
-    func getContentTabViewType(id: UUID) -> TabViewType{
-        if let tabData = TabDataList.first(where: { $0.id == id }) {
-            return tabData.tabViewDataManager.getTabType()
+    func getContentTabViewType() -> TabViewType{
+        if let id = selectedTab{
+            return self.getTabType(id: id)
+        }else{
+            return TabViewType.newTabView
         }
-        return TabViewType.newTabView
     }
     
     //指定したidのTabDataを削除する
