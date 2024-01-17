@@ -9,7 +9,7 @@ import SwiftUI
 import TabularData
 
 struct TeamData :Identifiable{
-    public let id: UUID
+    public let id = UUID()
     public var teamName: String?
     public var teamCsvPath: String?
     public var playerList: [String:Bool] = [:]
@@ -27,9 +27,9 @@ class TeamDataManager: ObservableObject {
     @Published var rightTeam: TeamData
     @Published var selectedTab: Int
     
-    init(id:UUID) {
-        self.leftTeam = TeamData(id:id)
-        self.rightTeam = TeamData(id:id)
+    init() {
+        self.leftTeam = TeamData()
+        self.rightTeam = TeamData()
         self.selectedTab = 1
     }
     

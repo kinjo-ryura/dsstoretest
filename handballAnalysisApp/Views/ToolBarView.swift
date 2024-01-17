@@ -35,7 +35,7 @@ struct toolBar: View{
             HStack(spacing: 0){
                 toolBarDivder(id: nil, TabListManager:_TabListManager)
                 ForEach(Array(TabListManager.TabDataList.indices), id: \.self) { index in
-                    toolBarTab(id: TabListManager.TabDataList[index].id, TabListManager:_TabListManager, icon: "figure.handball")
+                    toolBarTab(id: TabListManager.TabDataList[index].id)
                         .frame(maxWidth: 180)
                     toolBarDivder(id: TabListManager.TabDataList[index].id, TabListManager:_TabListManager)
                 }
@@ -59,12 +59,15 @@ struct toolBar: View{
                         }
                         .onTapGesture {
                             let tabTypeManager = TabViewDataManager(tabType: TabViewType())
+                            let id = UUID()
                             let newTab = MainView(
-                                title: "tab2",
+                                id:id,
+                                title: "新規タブ",
+                                tabViewType: .newTabView,
                                 tabViewDataManager: tabTypeManager,
-                                labelingRecordListManager: LabelingRecordListManager(),
-                                teamDataManager: TeamDataManager(),
-                                videoPlayerManaer: VideoPlayerManager()
+                                labelingRecordListManager: LabelingRecordListManager(id:id),
+                                teamDataManager: TeamDataManager(id:id),
+                                videoPlayerManaer: VideoPlayerManager(id:id)
                             )
                             TabListManager.addTabData(tabData: newTab)
                         }
@@ -112,17 +115,14 @@ struct toolBarDivder: View {
 
 struct toolBarTab: View {
     let id: UUID
-    @ObservedObject var TabListManager:TabListManager
-    let icon:String
+    @EnvironmentObject var TabListManager:TabListManager
     @State var ishovering: Bool = false
     @State var xmarkIshovering: Bool = false
     
     
     
-    init(id: UUID, TabListManager: ObservedObject<TabListManager>, icon: String) {
+    init(id: UUID) {
         self.id = id
-        self._TabListManager = TabListManager
-        self.icon = icon
     }
     
     var body: some View {
@@ -139,7 +139,7 @@ struct toolBarTab: View {
                 ))
                 .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
             HStack{
-                Image(systemName: icon)
+                Image(systemName: TabListManager.getContentTabViewType(id: id).getTabIcon())
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
                 Text(TabListManager.getContentTitle(id: id))
                 Spacer()

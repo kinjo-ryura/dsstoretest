@@ -11,20 +11,24 @@ import Combine
 struct MainView: View, Identifiable {
     let id: UUID
     var title: String
+    var tabViewType: TabViewType
     @ObservedObject var tabViewDataManager: TabViewDataManager
     @ObservedObject var labelingRecordListManager: LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
     @ObservedObject var videoPlayerManaer:VideoPlayerManager
     
     
-    init(title: String,
+    init(id:UUID,
+        title: String,
+         tabViewType: TabViewType,
          tabViewDataManager: TabViewDataManager,
          labelingRecordListManager: LabelingRecordListManager,
          teamDataManager: TeamDataManager,
          videoPlayerManaer:VideoPlayerManager
     ) {
-        self.id = UUID()
+        self.id = id
         self.title = title
+        self.tabViewType = tabViewType
         self.tabViewDataManager = tabViewDataManager
         self.labelingRecordListManager = labelingRecordListManager
         self.teamDataManager = teamDataManager
@@ -34,7 +38,7 @@ struct MainView: View, Identifiable {
     var body: some View {
         switch tabViewDataManager.getTabType() {
         case .newTabView:
-            NewTabView(tabViewTypeManager: tabViewDataManager)
+            NewTabView(tabViewTypeManager: tabViewDataManager,id:id)
                 .background(secondaryColor)
                 .clipShape(
                     .rect(topLeadingRadius: 10,

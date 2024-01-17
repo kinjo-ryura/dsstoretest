@@ -23,7 +23,7 @@ class VideoPlayerManager: ObservableObject{
     @Published var localvideoPlayer:LocalVideoPlayer
     
     init(id:UUID) {
-        self.localvideoPlayer = LocalVideoPlayer(id:id)
+        self.localvideoPlayer = LocalVideoPlayer(id: id)
     }
     
     func seekToTime(value: Double) {

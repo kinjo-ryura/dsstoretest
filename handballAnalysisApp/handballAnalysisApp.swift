@@ -15,13 +15,15 @@ struct handballAnalysisAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(windowDelegate: appDelegate.windowDelegate,tabListManager: tabListManager)
+            ContentView(windowDelegate: appDelegate.windowDelegate)
+                .environmentObject(tabListManager)
         }
         .windowToolbarStyle(UnifiedCompactWindowToolbarStyle())
         .windowStyle(HiddenTitleBarWindowStyle())
         
-        WindowGroup(for:LocalVideoPlayer.ID.self){id in
-            RemoteVideoView(tabListManager: tabListManager)
+        WindowGroup(for:LocalVideoPlayer.ID.self){ $id in
+            RemoteVideoView(id:id)
+                .environmentObject(tabListManager)
         }
     }
 }

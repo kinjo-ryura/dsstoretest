@@ -9,13 +9,22 @@ import SwiftUI
 
 //それぞれのタブのデータを独立で持つ
 class TabViewDataManager:ObservableObject{
+    @Published var text: String = ""
     @Published var tabViewType: TabViewType
     
     
     init(tabType:TabViewType) {
         self.tabViewType = tabType
     }
-
+    
+    func getText() -> String{
+        return text
+    }
+    
+    func changeText(text:String){
+        self.text = text
+    }
+    
     func getTabType() -> TabViewType{
         return tabViewType
     }
@@ -39,14 +48,6 @@ class TabListManager: ObservableObject{
     
     func setSelectedTab(id: UUID?) {
         selectedTab = id
-    }
-    
-    //選択されているタブのタブタイプを設定する
-    func setTabType(id:UUID, tabViewType:TabViewType){
-        if let index = TabDataList.firstIndex(
-            where:{ $0.id == id }){
-            TabDataList[index].tabViewType = tabViewType
-        }
     }
     
     //選択されているタブのcontentを取得する

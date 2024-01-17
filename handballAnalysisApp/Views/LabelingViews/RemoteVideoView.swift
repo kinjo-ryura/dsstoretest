@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct RemoteVideoView: View {
-    @ObservedObject var tabListManager:TabListManager
+    let id:UUID?
+    @EnvironmentObject var tabListManager:TabListManager
+    
     var body: some View {
         VStack{
-//            if let index = tabListManager.TabDataList[](
-//                where: { $0.id == id }
-//            ) {
-//                Text(videoManager.videos[index].text)
-//            }
+            if let mainView = tabListManager.TabDataList.first(
+                where: { $0.id == id}
+            ) {
+                AVPlayerViewRepresentable(player:mainView.videoPlayerManaer.localvideoPlayer.player)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }else{
+                Text("none")
+            }
         }
     }
 }
