@@ -22,10 +22,11 @@ struct LabelingRecord: Identifiable {
     public var shootAdditionContact: Bool = false
     public var shootAdditionReversehand: Bool = false
     public var shootAdditionReversefoot: Bool = false
-    public var passPoint: CGPoint?
+    public var assistPoint: CGPoint?
     public var catchPoint: CGPoint?
-    public var shootPoint: CGPoint?
+    public var actionPoint: CGPoint?
     public var goalPoint: CGPoint?
+    
     
     func mergeDetail() -> String {
         var details = ""
@@ -92,6 +93,7 @@ class LabelingRecordListManager: ObservableObject {
     @Published var temporaryRecord: LabelingRecord
     @Published var csvPath:String? = nil
     @Published var handballCourtMarkerType:HandballCourtMarkerType
+    @Published var isPressedInCourt:Bool = false
     //    @Published var team1score:Int? = nil
     //    @Published var team2score:Int? = nil
     
@@ -129,6 +131,33 @@ class LabelingRecordListManager: ObservableObject {
     //記録用のレコードをshow
     func showTmpRecord(){
         print(temporaryRecord)
+    }
+    
+    //コートのmarkerを設定する
+    func setMarkerPosition(markerType:HandballCourtMarkerType,point:CGPoint){
+        switch markerType {
+        case .assistPoint:
+            temporaryRecord.assistPoint = point
+        case .catchPoint:
+            temporaryRecord.catchPoint = point
+        case .actionPoint:
+            temporaryRecord.actionPoint = point
+        case .none:
+            break
+        }
+    }
+    
+    func getMarkerPosition(markerType:HandballCourtMarkerType) -> CGPoint?{
+        switch markerType {
+        case .assistPoint:
+            return temporaryRecord.assistPoint
+        case .catchPoint:
+            return temporaryRecord.catchPoint
+        case .actionPoint:
+            return temporaryRecord.actionPoint
+        case .none:
+            return nil
+        }
     }
     
     func clearRecordList() {
@@ -214,41 +243,41 @@ class LabelingRecordListManager: ObservableObject {
     //        }
     //    }
     
-    func writeDataFrame(record:LabelingRecord){
-        do{
-            var csvdata = try DataFrame(
-                contentsOfCSVFile: URL(fileURLWithPath: self.csvPath ?? ""),
-                columns: ["チーム","時間","結果","アシスト","アクション",
-                          "タイプ","タイミング","詳細","パスx","パスy",
-                          "キャッチx","キャッチy","シュートx","シュートy",
-                          "ゴールx","ゴールy"])
-            let detail = record.mergeDetail()
-            csvdata.append(row:
-                            record.team,
-                           record.time,
-                           record.result,
-                           record.assist,
-                           record.action,
-                           record.actionType,
-                           record.actionDetail,
-                           //                           record.shootTiming,
-                           detail,
-                           Double(record.passPoint?.x ?? 0),
-                           Double(record.passPoint?.y ?? 0),
-                           Double(record.catchPoint?.x ?? 0),
-                           Double(record.catchPoint?.y ?? 0),
-                           Double(record.shootPoint?.x ?? 0),
-                           Double(record.shootPoint?.y ?? 0),
-                           Double(record.goalPoint?.x ?? 0),
-                           Double(record.goalPoint?.y ?? 0))
-            if let csvPath{
-                try csvdata.writeCSV(to: URL(fileURLWithPath: csvPath))
-            }
-        }catch{
-            print(error)
-        }
-        
-    }
+    //    func writeDataFrame(record:LabelingRecord){
+    //        do{
+    //            var csvdata = try DataFrame(
+    //                contentsOfCSVFile: URL(fileURLWithPath: self.csvPath ?? ""),
+    //                columns: ["チーム","時間","結果","アシスト","アクション",
+    //                          "タイプ","タイミング","詳細","パスx","パスy",
+    //                          "キャッチx","キャッチy","シュートx","シュートy",
+    //                          "ゴールx","ゴールy"])
+    //            let detail = record.mergeDetail()
+    //            csvdata.append(row:
+    //                            record.team,
+    //                           record.time,
+    //                           record.result,
+    //                           record.assist,
+    //                           record.action,
+    //                           record.actionType,
+    //                           record.actionDetail,
+    //                           //                           record.shootTiming,
+    //                           detail,
+    //                           Double(record.passPoint?.x ?? 0),
+    //                           Double(record.passPoint?.y ?? 0),
+    //                           Double(record.catchPoint?.x ?? 0),
+    //                           Double(record.catchPoint?.y ?? 0),
+    //                           Double(record.shootPoint?.x ?? 0),
+    //                           Double(record.shootPoint?.y ?? 0),
+    //                           Double(record.goalPoint?.x ?? 0),
+    //                           Double(record.goalPoint?.y ?? 0))
+    //            if let csvPath{
+    //                try csvdata.writeCSV(to: URL(fileURLWithPath: csvPath))
+    //            }
+    //        }catch{
+    //            print(error)
+    //        }
+    //
+    //    }
     //
     //    func calScoreboard(){
     //        var team1 = 0

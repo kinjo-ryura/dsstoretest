@@ -11,6 +11,7 @@ import AVKit
 struct VideoView: View {
     @ObservedObject var videoPlayerManager:VideoPlayerManager
     @State private var isEditing = false
+    @Environment(\.openWindow) private var openWindow
     
     var body: some View {
         VStack{
@@ -34,27 +35,15 @@ struct VideoView: View {
                 }, label: {
                     Text("再生")
                 })
-                
-                Text(videoPlayerManager.getCurrentTime())
-                Text(videoPlayerManager.getVideoPlayTime())
-                Slider(
-                    value: Binding(
-                        get: { self.videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble },
-                        set: { newValue in
-                            self.videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble = newValue
-                            if !self.videoPlayerManager.localvideoPlayer.isSliderEditing {
-                                self.videoPlayerManager.seekToTime(value: newValue)
-                            }
-                        }
-                    ),
-                    in: 0...videoPlayerManager.localvideoPlayer.videoPlayTimeDouble,
-                    onEditingChanged: { editing in
-                        self.videoPlayerManager.localvideoPlayer.isSliderEditing = editing
-                        if !editing {
-                            self.videoPlayerManager.seekToTime(value: self.videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble)
-                        }
-                    }
-                )
+                Button(action: {
+                    openWindow(value:videoPlayerManager.localvideoPlayer.id)
+                }, label: {
+                    Text("openwindow")
+                })
+//
+//                Text(videoPlayerManager.getCurrentTime())
+//                Text(videoPlayerManager.getVideoPlayTime())
+//                NSSliderRepresentable(videoPlayerManager: videoPlayerManager)
                 
             }
         }
@@ -70,9 +59,9 @@ struct AVPlayerViewRepresentable: NSViewRepresentable {
     
     func makeNSView(context: Context) -> AVPlayerView {
         let playerView = AVPlayerView()
-        
         playerView.player = player
-        playerView.controlsStyle = .none // または他のスタイル
+        playerView.controlsStyle = .inline
+        playerView.allowsMagnification = true
         return playerView
     }
     
@@ -80,3 +69,44 @@ struct AVPlayerViewRepresentable: NSViewRepresentable {
         nsView.player = player
     }
 }
+
+struct NSSliderRepresentable: NSViewRepresentable {
+    @ObservedObject var videoPlayerManager:VideoPlayerManager
+    
+    func makeNSView(context: Context) -> NSSlider {
+        let slider = NSSlider(
+//            value: videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble,
+            value:0,
+            minValue: 0,
+            maxValue: videoPlayerManager.localvideoPlayer.videoPlayTimeDouble,
+            target: context.coordinator,
+            action: #selector(context.coordinator.changed(_:)))
+        return slider
+    }
+    
+    func updateNSView(_ nsView: NSSlider, context: Context) {
+//        nsView.doubleValue = videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble
+        nsView.maxValue = videoPlayerManager.localvideoPlayer.videoPlayTimeDouble
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(videoPlayerManager: videoPlayerManager)
+    }
+    
+    class Coordinator: NSObject {
+        @ObservedObject var videoPlayerManager:VideoPlayerManager
+        
+        init(videoPlayerManager: VideoPlayerManager) {
+            self.videoPlayerManager = videoPlayerManager
+        }
+        
+        @objc func changed(_ sender: NSSlider) {
+            print(sender.doubleValue)
+//            videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble = sender.doubleValue
+//            sender.maxValue = videoPlayerManager.localvideoPlayer.videoPlayTimeDouble
+            videoPlayerManager.seekToTime(value: sender.doubleValue)
+        }
+
+    }
+}
+

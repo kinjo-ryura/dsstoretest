@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct HandballGoalView: View {
-//    @Binding var record: Record
-    @State private var isMousePressed = false
+    @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @State var canvasWidth = 10.0
     @State var canvasHeight = 10.0
     
@@ -24,6 +23,7 @@ struct HandballGoalView: View {
                         canvasHeight = geometory.size.height
                         canvasWidth = canvasHeight*5/3
                     }
+
                     
                     let goalposts : [CGRect] = [
                         CGRect(x: canvasWidth/5*0.92, y: canvasWidth/5*0.92, width: canvasWidth/5*3.16, height: canvasWidth/5*0.08),
@@ -57,32 +57,29 @@ struct HandballGoalView: View {
                         context.fill(Path(goalpostWhite), with: .color(handballGoalWhite))
                     }
                     
-                    
-                    //                if let point = record.goalPoint {
-                    //                    let x = canvasWidth * (point.x/5 + 0.5)
-                    //                    let y = canvasHeight * (1 - point.y/3)
-                    //                    context.fill(Path(ellipseIn: CGRect(x: x - canvasWidth/5*0.08, y: y - canvasWidth/5*0.08, width: canvasWidth/5*0.16, height: canvasWidth/5*0.16)), with: .color(.yellow))
-                    //                }
+                    if let point = labelingRecordListManager.temporaryRecord.goalPoint {
+                        let x = canvasWidth * (point.x/5 + 0.5)
+                        let y = canvasHeight * (1 - point.y/3)
+                        context.fill(Path(ellipseIn: CGRect(x: x - canvasWidth/5*0.08, y: y - canvasWidth/5*0.08, width: canvasWidth/5*0.16, height: canvasWidth/5*0.16)), with: .color(.yellow))
+                    }
                     
                 }
                 .background(HandballCourtColor)
                 .frame(width: canvasWidth, height: canvasHeight)
                 .position(x: geometory.size.width / 2, y: geometory.size.height / 2)
-                //            .gesture(
-                //                DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                //                    .onChanged { value in
-                //                        var newPoint = value.location
-                //                        let difposX = geometory.size.width - canvasWidth
-                //                        let difposY = geometory.size.height - canvasHeight
-                //                        newPoint = CGPoint(x: newPoint.x - difposX/2, y: newPoint.y - difposY/2)
-                //
-                //                        record.goalPoint = CGPoint(x: (newPoint.x / canvasWidth*5) -  2.5, y: 3 - (newPoint.y / canvasHeight*3))
-                //                        isMousePressed = true
-                //                    }
-                //                    .onEnded { _ in
-                //                        isMousePressed = false
-                //                    }
-                //            )
+                            .gesture(
+                                DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                                    .onChanged { value in
+                                        var newPoint = value.location
+                                        let difposX = geometory.size.width - canvasWidth
+                                        let difposY = geometory.size.height - canvasHeight
+                                        newPoint = CGPoint(x: newPoint.x - difposX/2, y: newPoint.y - difposY/2)
+                
+                                        labelingRecordListManager.temporaryRecord.goalPoint = CGPoint(x: (newPoint.x / canvasWidth*5) -  2.5, y: 3 - (newPoint.y / canvasHeight*3))
+                                    }
+                                    .onEnded { _ in
+                                    }
+                            )
             }
         }
         .background(secondaryColor)

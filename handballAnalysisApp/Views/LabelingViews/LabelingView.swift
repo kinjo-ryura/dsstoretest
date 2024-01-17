@@ -31,7 +31,7 @@ struct LabelingView: View {
                     teamDataManager: teamDataManager
                 )
                 ResultView(labelingRecordListManager: labelingRecordListManager)
-                HandballGoalView()
+                HandballGoalView(labelingRecordListManager: labelingRecordListManager)
             }
         }
         .background(thirdColor)

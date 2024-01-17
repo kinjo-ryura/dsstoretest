@@ -43,6 +43,11 @@ class VideoPlayerManager: ObservableObject{
         return localvideoPlayer.videoPlayTimeString
     }
     
+    
+    @objc func playerDidFinishPlaying(note: NSNotification) {
+        print("Video Finished")
+    }
+    
     //再生地点の時間をアップデートうる
     func updateCurrentTime(){
         let timeInSeconds = CMTimeGetSeconds(localvideoPlayer.player.currentTime())
@@ -67,13 +72,10 @@ class VideoPlayerManager: ObservableObject{
     
     //動画時間をセットする
     func setVideoPlayTime(){
-        print("関数は動いているよ")
         if let duration = localvideoPlayer.player.currentItem?.duration{
-            print("itemがnilだよ")
             let totalSeconds = CMTimeGetSeconds(duration)
             // ここで総再生時間を扱う
             if !totalSeconds.isNaN {
-                print("totalSecondsがnanだよ")
                 let hours = Int(totalSeconds / 3600)
                 let minutes = Int(totalSeconds.truncatingRemainder(dividingBy: 3600) / 60)
                 let seconds = Int(totalSeconds.truncatingRemainder(dividingBy: 60))
@@ -86,7 +88,6 @@ class VideoPlayerManager: ObservableObject{
                 }
                 localvideoPlayer.videoPlayTimeString = timeString
                 localvideoPlayer.videoPlayTimeDouble = Double(totalSeconds)
-                print("変更したよ")
             }
         }
         
@@ -99,6 +100,8 @@ class VideoPlayerManager: ObservableObject{
             // ここに時間が変わるたびに実行したい処理を記述
             self.updateCurrentTime()
             self.setVideoPlayTime()
+            print(self.localvideoPlayer.videoCurrentTimeDouble)
+            print(self.localvideoPlayer.videoPlayTimeDouble)
         }
         localvideoPlayer.player = player
     }
@@ -114,5 +117,6 @@ class VideoPlayerManager: ObservableObject{
     }
     
 }
+
 
 

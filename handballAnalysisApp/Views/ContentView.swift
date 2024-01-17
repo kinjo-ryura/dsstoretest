@@ -19,7 +19,7 @@ let handballGoalRed = Color(red: 0.85, green: 0.32, blue: 0.25)
 
 struct ContentView: View {
     @ObservedObject var windowDelegate: WindowDelegate
-    @ObservedObject var tabListManager = TabListManager()
+    @ObservedObject var tabListManager:TabListManager
     @State var toolBarStatus = false
     var mouseLocation: NSPoint { NSEvent.mouseLocation }
     

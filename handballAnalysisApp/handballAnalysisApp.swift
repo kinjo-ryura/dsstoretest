@@ -10,12 +10,18 @@ import SwiftUI
 @main
 struct handballAnalysisAppApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject var tabListManager:TabListManager = TabListManager()
+                     
     
     var body: some Scene {
         WindowGroup {
-            ContentView(windowDelegate: appDelegate.windowDelegate)
+            ContentView(windowDelegate: appDelegate.windowDelegate,tabListManager: tabListManager)
         }
         .windowToolbarStyle(UnifiedCompactWindowToolbarStyle())
         .windowStyle(HiddenTitleBarWindowStyle())
+        
+        WindowGroup(for:LocalVideoPlayer.ID.self){id in
+            RemoteVideoView(tabListManager: tabListManager)
+        }
     }
 }
