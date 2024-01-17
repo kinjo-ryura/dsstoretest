@@ -24,6 +24,13 @@ struct handballAnalysisAppApp: App {
         WindowGroup(for:LocalVideoPlayer.ID.self){ $id in
             RemoteVideoView(id:id)
                 .environmentObject(tabListManager)
+                .onDisappear( perform: {
+                        if let mainView = tabListManager.TabDataList.first(
+                            where: { $0.id == id}
+                        ) {
+                            mainView.videoPlayerManaer.remoteView = true
+                        }
+                })
         }
     }
 }

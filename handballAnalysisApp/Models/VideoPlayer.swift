@@ -21,6 +21,7 @@ struct LocalVideoPlayer: Identifiable{
 
 class VideoPlayerManager: ObservableObject{
     @Published var localvideoPlayer:LocalVideoPlayer
+    @Published var remoteView = true
     
     init(id:UUID) {
         self.localvideoPlayer = LocalVideoPlayer(id:id)

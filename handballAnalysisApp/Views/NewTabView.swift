@@ -8,21 +8,18 @@
 import SwiftUI
 
 struct NewTabView: View {
-//    @ObservedObject var tabViewTypeManager:TabViewDataManager
     @EnvironmentObject var tabListManager:TabListManager
     let id:UUID
     
     var body: some View {
         VStack{
             Button {
-//                tabViewTypeManager.changeTabType(tabViewType: .labelingTabView)
                 tabListManager.setTabType(id:id, tabViewType: .labelingTabView)
                 tabListManager.setContentTitle(id: id, newTitle: "labeling")
             } label: {
                 Text("labeling")
             }
             Button {
-//                tabViewTypeManager.changeTabType(tabViewType: .displayTabView)
                 tabListManager.setTabType(id: id, tabViewType: .displayTabView)
                 tabListManager.setContentTitle(id: id, newTitle: "display")
             } label: {

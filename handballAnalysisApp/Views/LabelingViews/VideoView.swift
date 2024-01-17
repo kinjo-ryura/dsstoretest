@@ -37,13 +37,11 @@ struct VideoView: View {
                 })
                 Button(action: {
                     openWindow(value:videoPlayerManager.localvideoPlayer.id)
+                    videoPlayerManager.remoteView = false
                 }, label: {
                     Text("openwindow")
                 })
-//
-//                Text(videoPlayerManager.getCurrentTime())
-//                Text(videoPlayerManager.getVideoPlayTime())
-//                NSSliderRepresentable(videoPlayerManager: videoPlayerManager)
+
                 
             }
         }
@@ -69,44 +67,3 @@ struct AVPlayerViewRepresentable: NSViewRepresentable {
         nsView.player = player
     }
 }
-
-struct NSSliderRepresentable: NSViewRepresentable {
-    @ObservedObject var videoPlayerManager:VideoPlayerManager
-    
-    func makeNSView(context: Context) -> NSSlider {
-        let slider = NSSlider(
-//            value: videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble,
-            value:0,
-            minValue: 0,
-            maxValue: videoPlayerManager.localvideoPlayer.videoPlayTimeDouble,
-            target: context.coordinator,
-            action: #selector(context.coordinator.changed(_:)))
-        return slider
-    }
-    
-    func updateNSView(_ nsView: NSSlider, context: Context) {
-//        nsView.doubleValue = videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble
-        nsView.maxValue = videoPlayerManager.localvideoPlayer.videoPlayTimeDouble
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(videoPlayerManager: videoPlayerManager)
-    }
-    
-    class Coordinator: NSObject {
-        @ObservedObject var videoPlayerManager:VideoPlayerManager
-        
-        init(videoPlayerManager: VideoPlayerManager) {
-            self.videoPlayerManager = videoPlayerManager
-        }
-        
-        @objc func changed(_ sender: NSSlider) {
-            print(sender.doubleValue)
-//            videoPlayerManager.localvideoPlayer.videoCurrentTimeDouble = sender.doubleValue
-//            sender.maxValue = videoPlayerManager.localvideoPlayer.videoPlayTimeDouble
-            videoPlayerManager.seekToTime(value: sender.doubleValue)
-        }
-
-    }
-}
-
