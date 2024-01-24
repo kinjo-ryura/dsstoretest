@@ -11,6 +11,7 @@ struct LabelingView: View {
     @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
     @ObservedObject var videoPlayerManager:VideoPlayerManager
+    let id:UUID
     
     var body: some View {
         //remoteviewが表示されているかどうかで表示を変える
@@ -32,7 +33,10 @@ struct LabelingView: View {
                         labelingRecordListManager: labelingRecordListManager,
                         teamDataManager: teamDataManager
                     )
-                    ResultView(labelingRecordListManager: labelingRecordListManager)
+                    ResultView(labelingRecordListManager: labelingRecordListManager,
+                               teamDataManager: teamDataManager,
+                               id:id
+                    )
                     HandballGoalView(labelingRecordListManager: labelingRecordListManager)
                 }
             }
@@ -56,7 +60,10 @@ struct LabelingView: View {
                         labelingRecordListManager: labelingRecordListManager,
                         teamDataManager: teamDataManager
                     )
-                    ResultView(labelingRecordListManager: labelingRecordListManager)
+                    ResultView(labelingRecordListManager: labelingRecordListManager,
+                               teamDataManager: teamDataManager,
+                               id:id
+                    )
                 }
             }
             .background(thirdColor)

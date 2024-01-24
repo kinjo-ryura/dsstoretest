@@ -13,6 +13,7 @@ struct TeamData :Identifiable{
     public var teamName: String?
     public var teamCsvPath: String?
     public var playerList: [String:Bool] = [:]
+    public var goalKeeperList:[String:Bool] = [:]
     public var positionPlayer = PositionPlayer()
     
     
@@ -186,6 +187,11 @@ class TeamDataManager: ObservableObject {
         return getTeamData(teamType: teamType).playerList
     }
     
+    //leftかrightを指定してgoalKeeperListを取得する
+    func getGoalKeeperList(teamType:TeamType) -> [String:Bool]{
+        return getTeamData(teamType: teamType).goalKeeperList
+    }
+    
     //leftかrightを指定してplayerlistから
     //指定した名前のBoolを返す
     func isPlayerTrue(teamType:TeamType, playerName:String) -> Bool{
@@ -194,6 +200,30 @@ class TeamDataManager: ObservableObject {
             return leftTeam.playerList[playerName] ?? false
         case .rightTeam:
             return rightTeam.playerList[playerName] ?? false
+        }
+    }
+    
+    //leftかrightを指定してgoalKeeperListから
+    //指定した名前のBoolを返す
+    func isGoalKeeperTrue(teamType:TeamType, goalKeeperName:String) -> Bool{
+        switch teamType{
+        case .leftTeam:
+            return leftTeam.goalKeeperList[goalKeeperName] ?? false
+        case .rightTeam:
+            return rightTeam.goalKeeperList[goalKeeperName] ?? false
+        }
+    }
+    
+    func getOppositeGoalKeeperList(teamType:TeamType?) -> [String]{
+        if let teamType{
+            switch teamType {
+            case .leftTeam:
+                return rightTeam.goalKeeperList.filter { $0.value }.map { $0.key }
+            case .rightTeam:
+                return leftTeam.goalKeeperList.filter { $0.value }.map { $0.key }
+            }
+        }else{
+            return []
         }
     }
     
@@ -208,6 +238,17 @@ class TeamDataManager: ObservableObject {
         }
     }
     
+    
+    //leftかrightを指定してplayerlistから
+    //指定した名前のBoolを反転する
+    func toggleGoalKeeper(teamType:TeamType, goalKeeperName:String){
+        switch teamType{
+        case .leftTeam:
+            leftTeam.goalKeeperList[goalKeeperName]!.toggle()
+        case .rightTeam:
+            rightTeam.goalKeeperList[goalKeeperName]!.toggle()
+        }
+    }
     //leftかrightを指定してplayerlistから
     //指定した名前がpositionを持っているかを返す
     func playerHavePosition(teamType:TeamType, playerName:String) -> Bool{
@@ -233,8 +274,10 @@ class TeamDataManager: ObservableObject {
         switch teamType{
         case .leftTeam:
             leftTeam.playerList.removeAll()
+            leftTeam.goalKeeperList.removeAll()
         case .rightTeam:
             rightTeam.playerList.removeAll()
+            rightTeam.goalKeeperList.removeAll()
         }
     }
     
@@ -243,8 +286,10 @@ class TeamDataManager: ObservableObject {
         switch teamType{
         case .leftTeam:
             leftTeam.playerList[playerName] = false
+            leftTeam.goalKeeperList[playerName] = false
         case .rightTeam:
             rightTeam.playerList[playerName] = false
+            rightTeam.goalKeeperList[playerName] = false
         }
     }
     

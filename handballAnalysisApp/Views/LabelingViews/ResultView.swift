@@ -9,10 +9,37 @@ import SwiftUI
 
 struct ResultView: View {
     @ObservedObject var labelingRecordListManager:LabelingRecordListManager
+    @ObservedObject var teamDataManager: TeamDataManager
+    @EnvironmentObject var tabListManager:TabListManager
     @State  var isOn:Bool = false
+    let id:UUID
     
     var body: some View {
         VStack{
+            //resultがシュート関係の時だけキーパーを表示する
+            let currentResult = labelingRecordListManager.temporaryRecord.result
+            if currentResult == .getPoint || currentResult == .missShot{
+                Spacer()
+                let keeperList = teamDataManager.getOppositeGoalKeeperList(teamType: labelingRecordListManager.temporaryRecord.team)
+                let keeperCount = keeperList.count
+                let keeperRownum = Int(ceil(Double(keeperCount) / Double(3)))
+                
+                ForEach(0..<keeperRownum, id: \.self) { rowIndex in
+                    HStack {
+                        Spacer()
+                        ForEach(rowIndex * 3..<min(keeperCount, rowIndex * 3 + 3), id: \.self) { elementIndex in
+                            Button(action: {
+                                // ここにボタンのアクションを記述
+                            }, label: {
+                                Text(keeperList[elementIndex])
+                            })
+                            Spacer()
+                        }
+                    }
+                }
+                Spacer()
+                Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
+            }
             Spacer()
             let types = labelingRecordListManager.getActionTypeList()
             let typesCount = types.count
@@ -23,7 +50,7 @@ struct ResultView: View {
                     Spacer()
                     ForEach(rowIndex * 3..<min(typesCount, rowIndex * 3 + 3), id: \.self) { elementIndex in
                         Button(action: {
-                            // ここにボタンのアクションを記述
+                            labelingRecordListManager.setActionDetailOfTemporaryRedord(type: types[elementIndex])
                         }, label: {
                             Text(types[elementIndex])
                         })
@@ -35,30 +62,10 @@ struct ResultView: View {
             Spacer()
             Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
             Spacer()
-            let details = labelingRecordListManager.getActionDetailList()
-            let detailsCount = details.count
-            let detailsRownum = Int(ceil(Double(detailsCount) / Double(3)))
-            
-            ForEach(0..<detailsRownum, id: \.self) { rowIndex in
-                HStack {
-                    Spacer()
-                    ForEach(rowIndex * 3..<min(detailsCount, rowIndex * 3 + 3), id: \.self) { elementIndex in
-                        Button(action: {
-                            // ここにボタンのアクションを記述
-                        }, label: {
-                            Text(details[elementIndex])
-                        })
-                        Spacer()
-                    }
-                }
-            }
-            Spacer()
-            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
-            Spacer()
             HStack{
-                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.shootAdditionContact,title:"接触")
-                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.shootAdditionReversefoot,title:"逆足")
-                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.shootAdditionReversehand,title:"逆手")
+                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.additionContact,title:"接触")
+                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.additionReversefoot,title:"逆足")
+                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.additionReversehand,title:"逆手")
                 
             }
             Spacer()
@@ -66,8 +73,27 @@ struct ResultView: View {
             Spacer()
             Button(
                 role: .none,
-                action: {labelingRecordListManager.showTmpRecord()},
+                action: {labelingRecordListManager.showTmpRecord()
+                    labelingRecordListManager.checkCompleteness()
+                },
                 label: {Text("みせる")}
+            )
+            Button(
+                action: {labelingRecordListManager.createNewGameCsv()},
+                label: {Text("create")}
+            )
+            Button(
+                action: {
+                    var csvName = labelingRecordListManager.setGameCsvPath()
+                    if let csvName{
+                        tabListManager.setContentTitle(id: id, newTitle: csvName)
+                    }
+                },label: {
+                    Text("read")
+            })
+            Button(
+                action: {labelingRecordListManager.addRecordDataFrame()},
+                label: {Text("write")}
             )
             Spacer()
         }

@@ -42,7 +42,12 @@ struct TeamMemberView: View {
                 VStack{
                     HStack(spacing: 0){
                         teamMemberTabDivider(dividerNumber: 0, teamDataManager: teamDataManager)
-                        Button(role: .none, action: {teamDataManager.setSelectedTab(select: 0)},
+                        Button(role: .none,
+                               action: {
+                                    labelingRecordListManager.clearTemporaryRecord()
+                                    teamDataManager.setSelectedTab(select: 0)
+                                    labelingRecordListManager.temporaryRecord.team = .leftTeam
+                                },
                                label:{
                             Text(teamDataManager.getTeamName(teamType: .leftTeam))
                                 .frame(maxWidth: .infinity, maxHeight:.infinity)
@@ -72,7 +77,12 @@ struct TeamMemberView: View {
                         .background(primaryColor)
                         .frame(width:geometry.size.width/3-12,height:32)
                         teamMemberTabDivider(dividerNumber: 2, teamDataManager: teamDataManager)
-                        Button(role: .none, action: {teamDataManager.setSelectedTab(select: 2)},
+                        Button(role: .none,
+                               action: {
+                                labelingRecordListManager.clearTemporaryRecord()
+                                teamDataManager.setSelectedTab(select: 2)
+                                labelingRecordListManager.temporaryRecord.team = .rightTeam
+                                },
                                label:{
                             Text(teamDataManager.getTeamName(teamType: .rightTeam))
                                 .frame(maxWidth: .infinity, maxHeight:.infinity)
@@ -200,12 +210,7 @@ struct RegisterTeamView: View {
                 GridItem(.flexible(), spacing: 0),
             ], spacing: 10) {
                 ForEach(leftPlayerList.keys.sorted(), id: \.self) {player in
-                    let buttonColor: Color = teamDataManager.isPlayerTrue(teamType: .leftTeam, playerName: player) ? .red : .black
-                    Button(action: {
-                        teamDataManager.togglePlayer(teamType: .leftTeam, playerName: player)
-                    }, label: {
-                        Text(player).foregroundStyle(buttonColor)
-                    })
+                    RegisterPlayerButton(teamDataManager: teamDataManager, teamType: .leftTeam, player: player)
                 }
             }
             Spacer()
@@ -223,12 +228,7 @@ struct RegisterTeamView: View {
                 GridItem(.flexible(), spacing: 0),
             ], spacing: 10) {
                 ForEach(rightPlayerList.keys.sorted(), id: \.self) {player in
-                    let buttonColor: Color = teamDataManager.isPlayerTrue(teamType: .leftTeam, playerName: player) ? .red : .black
-                    Button(action: {
-                        teamDataManager.togglePlayer(teamType: .rightTeam, playerName: player)
-                    }, label: {
-                        Text(player).foregroundStyle(buttonColor)
-                    })
+                    RegisterPlayerButton(teamDataManager: teamDataManager, teamType: .rightTeam, player: player)
                 }
             }
             Spacer()
@@ -315,5 +315,56 @@ struct PlayerPositionButtom: View {
                     //長押しでリセットするか迷っている
                 }
         }
+    }
+}
+
+struct RegisterPlayerButton:View {
+    @ObservedObject var teamDataManager:TeamDataManager
+    let teamType:TeamType
+    let player:String
+    
+    var body: some View {
+        ZStack{
+            let activePlayer = teamDataManager.isPlayerTrue(teamType: teamType, playerName: player)
+            let activeGoalKeeper = teamDataManager.isGoalKeeperTrue(teamType: teamType, goalKeeperName: player)
+            let fontColor:Color = activePlayer && activeGoalKeeper ? .green://キーパーかつスタメンなら緑
+                                    activePlayer ? .blue://スタメンなら青
+                                    activeGoalKeeper ? .red://キーパーなら赤
+                                    .black//どちらでもなければ黒
+            
+            Rectangle()
+                .fill(.white)
+                .clipShape(
+                    .rect(
+                        topLeadingRadius: 5,
+                        bottomLeadingRadius: 5,
+                        bottomTrailingRadius: 5,
+                        topTrailingRadius: 5
+                    )
+                )
+            Text(player)
+                .font(.title3)
+                .foregroundStyle(fontColor)
+            Rectangle()
+                .fill(.clear)
+                .frame(maxWidth: .infinity,maxHeight: .infinity)
+                .contentShape(Rectangle())
+                .clipShape(
+                    .rect(
+                        topLeadingRadius: 5,
+                        bottomLeadingRadius: 5,
+                        bottomTrailingRadius: 5,
+                        topTrailingRadius: 5
+                    )
+                )
+                .onTapGesture(count: 2) {
+                    teamDataManager.toggleGoalKeeper(teamType: teamType, goalKeeperName: player)
+                }
+                .onTapGesture(count:1){
+                    teamDataManager.togglePlayer(teamType: teamType, playerName: player)
+                }
+                
+        }
+        .frame(width: 90,height: 25)
     }
 }

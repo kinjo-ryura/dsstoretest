@@ -48,7 +48,8 @@ struct MainView: View, Identifiable {
             LabelingView(
                 labelingRecordListManager: labelingRecordListManager,
                 teamDataManager: teamDataManager,
-                videoPlayerManager: videoPlayerManaer
+                videoPlayerManager: videoPlayerManaer,
+                id: id
             )
             .background(secondaryColor)
             .clipShape(

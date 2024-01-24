@@ -12,39 +12,54 @@ struct MarkerSelectView: View {
     var body: some View {
         GeometryReader{ geometry in
             VStack(spacing:0){
-                Button(action: {
-                    labelingRecordListManager.handballCourtMarkerType = .assistPoint
-                }, label: {
-                    Image(systemName: "soccerball.inverse")
-                        .foregroundStyle(.yellow)
-                        .font(.largeTitle)
-                        .frame(maxWidth: .infinity,maxHeight:.infinity)
-                        .background(labelingRecordListManager.handballCourtMarkerType == .assistPoint ? secondaryColor:primaryColor)
-                })
-                .buttonStyle(.plain)
-                .frame(width: geometry.size.width,height:geometry.size.height/3)
-                Button(action: {
-                    labelingRecordListManager.handballCourtMarkerType = .catchPoint
-                }, label: {
-                    Image(systemName: "hands.clap.fill")
-                        .foregroundColor(.green)
-                        .font(.largeTitle)
-                        .frame(maxWidth: .infinity,maxHeight:.infinity)
-                        .background(labelingRecordListManager.handballCourtMarkerType == .catchPoint ? secondaryColor:primaryColor)
-                })
-                .buttonStyle(.plain)
-                .frame(width: geometry.size.width,height:geometry.size.height/3)
-                Button(action: {
-                    labelingRecordListManager.handballCourtMarkerType = .actionPoint
-                }, label: {
-                    Image(systemName: "figure.handball")
-                        .foregroundColor(.red)
-                        .font(.largeTitle)
-                        .frame(maxWidth: .infinity,maxHeight:.infinity)
-                        .background(labelingRecordListManager.handballCourtMarkerType == .actionPoint ? secondaryColor:primaryColor)
-                })
-                .buttonStyle(.plain)
-                .frame(width: geometry.size.width,height:geometry.size.height/3)
+                let markers = labelingRecordListManager.getMarkers()
+                let markersCount = markers.count
+                ForEach(markers,id: \.1){ marker in
+                    Button(action: {
+                        labelingRecordListManager.handballCourtMarkerType = marker.0
+                    }, label: {
+                        Image(systemName: marker.1)
+                            .foregroundStyle(marker.0.getColor())
+                            .font(.largeTitle)
+                            .frame(maxWidth: .infinity,maxHeight:.infinity)
+                            .background(labelingRecordListManager.handballCourtMarkerType == marker.0 ? secondaryColor:primaryColor)
+                    })
+                    .buttonStyle(.plain)
+                    .frame(width: geometry.size.width,height:geometry.size.height/CGFloat(markersCount))
+                }
+//                Button(action: {
+//                    labelingRecordListManager.handballCourtMarkerType = .assistPoint
+//                }, label: {
+//                    Image(systemName: "soccerball.inverse")
+//                        .foregroundStyle(.yellow)
+//                        .font(.largeTitle)
+//                        .frame(maxWidth: .infinity,maxHeight:.infinity)
+//                        .background(labelingRecordListManager.handballCourtMarkerType == .assistPoint ? secondaryColor:primaryColor)
+//                })
+//                .buttonStyle(.plain)
+//                .frame(width: geometry.size.width,height:geometry.size.height/3)
+//                Button(action: {
+//                    labelingRecordListManager.handballCourtMarkerType = .catchPoint
+//                }, label: {
+//                    Image(systemName: "hands.clap.fill")
+//                        .foregroundColor(.green)
+//                        .font(.largeTitle)
+//                        .frame(maxWidth: .infinity,maxHeight:.infinity)
+//                        .background(labelingRecordListManager.handballCourtMarkerType == .catchPoint ? secondaryColor:primaryColor)
+//                })
+//                .buttonStyle(.plain)
+//                .frame(width: geometry.size.width,height:geometry.size.height/3)
+//                Button(action: {
+//                    labelingRecordListManager.handballCourtMarkerType = .actionPoint
+//                }, label: {
+//                    Image(systemName: "figure.handball")
+//                        .foregroundColor(.red)
+//                        .font(.largeTitle)
+//                        .frame(maxWidth: .infinity,maxHeight:.infinity)
+//                        .background(labelingRecordListManager.handballCourtMarkerType == .actionPoint ? secondaryColor:primaryColor)
+//                })
+//                .buttonStyle(.plain)
+//                .frame(width: geometry.size.width,height:geometry.size.height/3)
             }
         }
     }

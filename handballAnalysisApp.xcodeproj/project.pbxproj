@@ -29,6 +29,7 @@
 		739548A32B53DE3B007530B3 /* MarkerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548A22B53DE3B007530B3 /* MarkerSelectView.swift */; };
 		739548A52B5407E0007530B3 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548A42B5407E0007530B3 /* VideoPlayer.swift */; };
 		739548A82B540937007530B3 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 739548A72B540937007530B3 /* YouTubePlayerKit */; };
+		73AAB49F2B60FE7D009F11F3 /* DisplayRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB49E2B60FE7D009F11F3 /* DisplayRecordManager.swift */; };
 		73AE37272B579D9200F8C9F0 /* RemoteVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		739548A02B510520007530B3 /* PositionDragDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionDragDelegate.swift; sourceTree = "<group>"; };
 		739548A22B53DE3B007530B3 /* MarkerSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerSelectView.swift; sourceTree = "<group>"; };
 		739548A42B5407E0007530B3 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
+		73AAB49E2B60FE7D009F11F3 /* DisplayRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRecordManager.swift; sourceTree = "<group>"; };
 		73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteVideoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +119,7 @@
 				739548A42B5407E0007530B3 /* VideoPlayer.swift */,
 				739548A02B510520007530B3 /* PositionDragDelegate.swift */,
 				739548662B4EA332007530B3 /* WindowDelegate.swift */,
+				73AAB49E2B60FE7D009F11F3 /* DisplayRecordManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				7395486D2B4EA75A007530B3 /* DisplayView.swift in Sources */,
 				739548542B4EA0D6007530B3 /* ContentView.swift in Sources */,
 				739548952B4FDD83007530B3 /* TeamMemberView.swift in Sources */,
+				73AAB49F2B60FE7D009F11F3 /* DisplayRecordManager.swift in Sources */,
 				739548A12B510520007530B3 /* PositionDragDelegate.swift in Sources */,
 				739548522B4EA0D6007530B3 /* handballAnalysisApp.swift in Sources */,
 				739548932B4FDD54007530B3 /* HandballCourtView.swift in Sources */,
