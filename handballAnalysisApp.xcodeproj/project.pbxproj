@@ -132,7 +132,7 @@
 				739548622B4EA260007530B3 /* ToolBarView.swift */,
 				739548682B4EA37E007530B3 /* NewTabView.swift */,
 				7395488F2B4FDCF3007530B3 /* LabelingViews */,
-				7395486C2B4EA75A007530B3 /* DisplayView.swift */,
+				73AAB4A02B610616009F11F3 /* DisplayViews */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -150,6 +150,14 @@
 				73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */,
 			);
 			path = LabelingViews;
+			sourceTree = "<group>";
+		};
+		73AAB4A02B610616009F11F3 /* DisplayViews */ = {
+			isa = PBXGroup;
+			children = (
+				7395486C2B4EA75A007530B3 /* DisplayView.swift */,
+			);
+			path = DisplayViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
