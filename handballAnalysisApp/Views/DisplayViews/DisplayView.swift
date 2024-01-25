@@ -17,8 +17,8 @@ struct DisplayView: View {
             RecordTableView(displayRecordManager: displayRecordManager)
             VSplitView{
                 if let selectionId = displayRecordManager.selectionId{
-                    
-                    
+                    DisplayCourtView(displayRecordManager: displayRecordManager)
+                    DisplayGoalView(displayRecordManager: displayRecordManager)
                 }else{
                     ScoreBoardView(displayRecordManager: displayRecordManager)
                     SettingView(displayRecordManager: displayRecordManager,

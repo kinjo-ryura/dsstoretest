@@ -9,8 +9,8 @@ import SwiftUI
 
 struct HandballGoalView: View {
     @ObservedObject var labelingRecordListManager:LabelingRecordListManager
-    @State var canvasWidth = 10.0
-    @State var canvasHeight = 10.0
+    @State var canvasWidth = 100.0
+    @State var canvasHeight = 100.0
     
     var body: some View {
         VStack{

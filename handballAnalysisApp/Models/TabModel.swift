@@ -43,7 +43,6 @@ class TabListManager: ObservableObject{
         guard let selectedTabId = selectedTab else {
             return nil  // 選択されているタブがない場合
         }
-        print(selectedTabId)
         return TabDataList.first(where: { $0.id == selectedTabId })
     }
     

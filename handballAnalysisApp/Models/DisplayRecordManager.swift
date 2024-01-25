@@ -97,6 +97,18 @@ class DisplayRecordManager: ObservableObject {
         }
     }
     
+    func getMarkerPosition(markerType:HandballCourtMarkerType) -> CGPoint?{
+        switch markerType {
+        case .assistPoint:
+            return selectionRecord?.assistPoint
+        case .catchPoint:
+            return selectionRecord?.catchPoint
+        case .actionPoint:
+            return selectionRecord?.actionPoint
+        case .none:
+            return nil
+        }
+    }
     
     //panelでgameCsvPathを設定する
     func setGameCsvPath() -> String?{

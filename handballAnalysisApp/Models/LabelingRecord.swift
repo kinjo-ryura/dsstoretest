@@ -138,7 +138,6 @@ class LabelingRecordListManager: ObservableObject {
             // ユーザーが保存を選択した場合の処理
             if let selectedURL = panel.url {
                 // selectedURLにファイルが保存されます
-                print("Selected File URL: \(selectedURL.path)")
 //                ["チーム","時間","結果","アシスト","アクション",
 //                 "ゴールキーパー","詳細","追加情報","パスx","パスy",
 //                 "キャッチx","キャッチy","シュートx","シュートy",
@@ -177,7 +176,6 @@ class LabelingRecordListManager: ObservableObject {
         let panel = NSOpenPanel()
         if panel.runModal() == .OK {
             do{
-                print("hiraitemiruyo")
                 //読み込んだpatnが正しいcsvのものかを確かめる
                 let _ = try DataFrame(
                     contentsOfCSVFile: URL(fileURLWithPath: panel.url?.path ?? ""),
@@ -186,7 +184,6 @@ class LabelingRecordListManager: ObservableObject {
                               "キャッチx","キャッチy","アクションx","アクションy",
                               "ゴールx","ゴールy"]
                 )
-                print("sitamojiko")
                 //正しければそのpathを設定する
                 self.gameCsvPath = panel.url?.path
                 

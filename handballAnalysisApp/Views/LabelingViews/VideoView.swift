@@ -14,37 +14,14 @@ struct VideoView: View {
     @Environment(\.openWindow) private var openWindow
     
     var body: some View {
-        VStack{
+        VStack(spacing:0){
             AVPlayerViewRepresentable(player: videoPlayerManager.localvideoPlayer.player)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-            HStack{
-                Button(action: {
-                    let panel = NSOpenPanel()
-                    if panel.runModal() == .OK{
-                        if let url = panel.url?.path{
-                            videoPlayerManager.setVideoUrl(url: URL(filePath: url))
-                        }
-                    }
-                    
-                }, label: {
-                    Text("動画選択")
-                })
-                Button(action: {
-                    videoPlayerManager.startPauseVideo()
-                }, label: {
-                    Text("再生")
-                })
-                Button(action: {
-                    openWindow(value:videoPlayerManager.localvideoPlayer.id)
-                    videoPlayerManager.remoteView = false
-                }, label: {
-                    Text("openwindow")
-                })
-
-                
-            }
         }
+        .padding(EdgeInsets(top: 7,
+                            leading: 7,
+                            bottom: 0,
+                            trailing: 3))
         .frame(maxWidth: .infinity,maxHeight: .infinity)
         .background(secondaryColor)
     }

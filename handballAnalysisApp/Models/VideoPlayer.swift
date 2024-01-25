@@ -45,10 +45,6 @@ class VideoPlayerManager: ObservableObject{
     }
     
     
-    @objc func playerDidFinishPlaying(note: NSNotification) {
-        print("Video Finished")
-    }
-    
     //再生地点の時間をアップデートうる
     func updateCurrentTime(){
         let timeInSeconds = CMTimeGetSeconds(localvideoPlayer.player.currentTime())

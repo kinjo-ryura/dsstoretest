@@ -25,6 +25,7 @@ struct SettingView: View {
             })
         }
         .frame(maxWidth: .infinity,maxHeight: .infinity)
+        .background(secondaryColor)
     }
 }
 

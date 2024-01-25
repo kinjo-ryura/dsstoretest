@@ -19,7 +19,10 @@ struct LabelingView: View {
             VSplitView{
                 HStack(spacing: 0){
                     HSplitView{
-                        VideoView(videoPlayerManager: videoPlayerManager)
+                        VStack(spacing:0){
+                            VideoView(videoPlayerManager: videoPlayerManager)
+                            VideoOperationView(videoPlayerManager: videoPlayerManager)
+                        }
                         HandballCourtView(labelingRecordListManager: labelingRecordListManager)
                     }
                     MarkerSelectView(labelingRecordListManager: labelingRecordListManager).frame(maxWidth: 50,maxHeight:.infinity)
@@ -46,7 +49,12 @@ struct LabelingView: View {
             VSplitView{
                 HStack(spacing: 0){
                     HSplitView{
-                        HandballGoalView(labelingRecordListManager: labelingRecordListManager)
+                        VStack(spacing: 0) {
+                            HandballGoalView(labelingRecordListManager: labelingRecordListManager)
+                                .frame(maxWidth: .infinity,maxHeight:.infinity)
+                            VideoOperationView(videoPlayerManager: videoPlayerManager)
+                        }
+                        .frame(maxWidth: .infinity,maxHeight:.infinity)
                         HandballCourtView(labelingRecordListManager: labelingRecordListManager)
                     }
                     MarkerSelectView(labelingRecordListManager: labelingRecordListManager).frame(maxWidth: 50,maxHeight:.infinity)
