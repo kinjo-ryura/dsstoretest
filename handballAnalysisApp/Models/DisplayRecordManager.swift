@@ -17,13 +17,29 @@ class DisplayRecordManager: ObservableObject {
     @Published var rightTeam:String?
     
     
-    
+    //teamNameを取得する
     func getLeftTeamName() -> String{
         return self.leftTeam ?? ""
     }
-    
     func getRightTeamName() -> String{
         return self.rightTeam ?? ""
+    }
+    
+    //teamScoreを取得する
+    func getLeftTeamScore() -> Int{
+        let goalsCount = displayRecordList.filter { record in
+            return record.team == self.leftTeam && record.result == "得点"
+        }.count
+        print(goalsCount)
+        return goalsCount
+    }
+    //teamScoreを取得する
+    func getRightTeamScore() -> Int{
+        let goalsCount = displayRecordList.filter { record in
+            return record.team == self.rightTeam && record.result == "得点"
+        }.count
+        print(goalsCount)
+        return goalsCount
     }
     
     //チームを入れ替える

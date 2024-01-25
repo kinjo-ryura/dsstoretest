@@ -16,25 +16,16 @@ struct DisplayView: View {
         HSplitView{
             RecordTableView(displayRecordManager: displayRecordManager)
             VSplitView{
-                ScoreBoardView(displayRecordManager: displayRecordManager)
-//                Button(action: {
-//                    var csvName = displayRecordManager.setGameCsvPath()
-//                    if let csvName{
-//                        tabListManager.setContentTitle(id: id, newTitle: csvName)
-//                    }
-//                    
-//                }, label: {
-//                    Text("gamecsv")
-//                })
-//                Button(action: {
-//                    displayRecordManager.exchangeTeam()
-//                }, label: {
-//                    Text("change court")
-//                })
-                Rectangle()
+                if let selectionId = displayRecordManager.selectionId{
+                    
+                    
+                }else{
+                    ScoreBoardView(displayRecordManager: displayRecordManager)
+                    SettingView(displayRecordManager: displayRecordManager,
+                                id: id)
+                }
             }
         }
-        .padding(0)
         .frame(maxWidth: .infinity,maxHeight: .infinity)
         .background(thirdColor)
     }
