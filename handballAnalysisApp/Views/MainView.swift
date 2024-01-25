@@ -15,6 +15,7 @@ struct MainView: View, Identifiable {
     @ObservedObject var labelingRecordListManager: LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
     @ObservedObject var videoPlayerManaer:VideoPlayerManager
+    @ObservedObject var displayRecordManager:DisplayRecordManager
     @EnvironmentObject var tabListManager:TabListManager
     
     
@@ -23,7 +24,8 @@ struct MainView: View, Identifiable {
          tabViewType: TabViewType,
          labelingRecordListManager: LabelingRecordListManager,
          teamDataManager: TeamDataManager,
-         videoPlayerManaer:VideoPlayerManager
+         videoPlayerManaer:VideoPlayerManager,
+         displayRecordManager:DisplayRecordManager
     ) {
         self.id = id
         self.title = title
@@ -31,10 +33,10 @@ struct MainView: View, Identifiable {
         self.labelingRecordListManager = labelingRecordListManager
         self.teamDataManager = teamDataManager
         self.videoPlayerManaer = videoPlayerManaer
+        self.displayRecordManager = displayRecordManager
     }
     
     var body: some View {
-//        switch tabViewDataManager.getTabType() {
         switch tabListManager.getTabType(id:id) {
         case .newTabView:
             NewTabView(id:id)
@@ -58,7 +60,9 @@ struct MainView: View, Identifiable {
                      )
             )
         case .displayTabView:
-            DisplayView()
+            DisplayView(displayRecordManager: displayRecordManager,
+                        id:id
+            )
                 .background(secondaryColor)
                 .clipShape(
                     .rect(topLeadingRadius: 10,

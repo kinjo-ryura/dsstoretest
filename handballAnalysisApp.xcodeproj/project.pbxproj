@@ -30,6 +30,8 @@
 		739548A52B5407E0007530B3 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548A42B5407E0007530B3 /* VideoPlayer.swift */; };
 		739548A82B540937007530B3 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 739548A72B540937007530B3 /* YouTubePlayerKit */; };
 		73AAB49F2B60FE7D009F11F3 /* DisplayRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB49E2B60FE7D009F11F3 /* DisplayRecordManager.swift */; };
+		73AAB4A22B61097B009F11F3 /* RecordTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB4A12B61097B009F11F3 /* RecordTableView.swift */; };
+		73AAB4A42B614A7B009F11F3 /* ScoreBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB4A32B614A7B009F11F3 /* ScoreBoardView.swift */; };
 		73AE37272B579D9200F8C9F0 /* RemoteVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +60,8 @@
 		739548A22B53DE3B007530B3 /* MarkerSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerSelectView.swift; sourceTree = "<group>"; };
 		739548A42B5407E0007530B3 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		73AAB49E2B60FE7D009F11F3 /* DisplayRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRecordManager.swift; sourceTree = "<group>"; };
+		73AAB4A12B61097B009F11F3 /* RecordTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTableView.swift; sourceTree = "<group>"; };
+		73AAB4A32B614A7B009F11F3 /* ScoreBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreBoardView.swift; sourceTree = "<group>"; };
 		73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteVideoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -156,6 +160,8 @@
 			isa = PBXGroup;
 			children = (
 				7395486C2B4EA75A007530B3 /* DisplayView.swift */,
+				73AAB4A12B61097B009F11F3 /* RecordTableView.swift */,
+				73AAB4A32B614A7B009F11F3 /* ScoreBoardView.swift */,
 			);
 			path = DisplayViews;
 			sourceTree = "<group>";
@@ -237,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				739548A32B53DE3B007530B3 /* MarkerSelectView.swift in Sources */,
+				73AAB4A42B614A7B009F11F3 /* ScoreBoardView.swift in Sources */,
 				7395489B2B4FE182007530B3 /* LabelingRecord.swift in Sources */,
 				739548692B4EA37E007530B3 /* NewTabView.swift in Sources */,
 				7395489D2B501210007530B3 /* TeamModel.swift in Sources */,
@@ -246,6 +253,7 @@
 				7395486B2B4EA74F007530B3 /* LabelingView.swift in Sources */,
 				739548652B4EA2CC007530B3 /* TabModel.swift in Sources */,
 				739548672B4EA332007530B3 /* WindowDelegate.swift in Sources */,
+				73AAB4A22B61097B009F11F3 /* RecordTableView.swift in Sources */,
 				73AE37272B579D9200F8C9F0 /* RemoteVideoView.swift in Sources */,
 				739548912B4FDD32007530B3 /* VideoView.swift in Sources */,
 				739548A52B5407E0007530B3 /* VideoPlayer.swift in Sources */,

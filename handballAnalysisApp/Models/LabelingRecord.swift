@@ -151,12 +151,12 @@ class LabelingRecordListManager: ObservableObject {
                                         "ゴールキーパー":["選手名"],
                                         "詳細":["クイックorノーマルorスロー"],
                                         "追加情報":["接触_逆足_..."],
-                                        "パスx":[0.0],
-                                        "パスy":[0.0],
+                                        "アシストx":[0.0],
+                                        "アシストy":[0.0],
                                         "キャッチx":[0.0],
                                         "キャッチy":[0.0],
-                                        "シュートx":[0.0],
-                                        "シュートy":[0.0],
+                                        "アクションx":[0.0],
+                                        "アクションy":[0.0],
                                         "ゴールx":[0.0],
                                         "ゴールy":[0.0]
                 ]
@@ -182,8 +182,8 @@ class LabelingRecordListManager: ObservableObject {
                 let _ = try DataFrame(
                     contentsOfCSVFile: URL(fileURLWithPath: panel.url?.path ?? ""),
                     columns: ["チーム","時間","結果","アシスト","アクション",
-                              "ゴールキーパー","詳細","追加情報","パスx","パスy",
-                              "キャッチx","キャッチy","シュートx","シュートy",
+                              "ゴールキーパー","詳細","追加情報","アシストx","アシストy",
+                              "キャッチx","キャッチy","アクションx","アクションy",
                               "ゴールx","ゴールy"]
                 )
                 print("sitamojiko")
@@ -331,8 +331,8 @@ class LabelingRecordListManager: ObservableObject {
                 var csvdata = try DataFrame(
                     contentsOfCSVFile: URL(fileURLWithPath: self.gameCsvPath ?? ""),
                     columns: ["チーム","時間","結果","アシスト","アクション",
-                              "ゴールキーパー","詳細","追加情報","パスx","パスy",
-                              "キャッチx","キャッチy","シュートx","シュートy",
+                              "ゴールキーパー","詳細","追加情報","アシストx","アシストy",
+                              "キャッチx","キャッチy","アクションx","アクションy",
                               "ゴールx","ゴールy"]
                 )
                 //temporaryRecordを追加する
