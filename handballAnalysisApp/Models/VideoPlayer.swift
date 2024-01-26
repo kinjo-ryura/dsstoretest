@@ -27,6 +27,11 @@ class VideoPlayerManager: ObservableObject{
         self.localvideoPlayer = LocalVideoPlayer(id:id)
     }
     
+    //
+    func stopPlayer(){
+        localvideoPlayer.player.pause()
+    }
+    
     //再生中かどうかを返す
     func isPlay() -> Bool{
         return localvideoPlayer.player.timeControlStatus == .playing

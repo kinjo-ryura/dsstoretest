@@ -75,6 +75,7 @@ class TabListManager: ObservableObject{
     //指定したidのTabDataを削除する
     func removeTabData(id: UUID) {
         if let index = TabDataList.firstIndex(where: { $0.id == id }) {
+            TabDataList[index].videoPlayerManaer.stopPlayer()
             TabDataList.remove(at: index)
         }
     }
