@@ -28,7 +28,7 @@ struct handballAnalysisAppApp: App {
                         if let mainView = tabListManager.TabDataList.first(
                             where: { $0.id == id}
                         ) {
-                            mainView.videoPlayerManaer.remoteView = true
+                            mainView.videoPlayerManaer.remoteView = false
                         }
                 })
         }

@@ -50,7 +50,7 @@ struct ResultView: View {
                     Spacer()
                     ForEach(rowIndex * 3..<min(typesCount, rowIndex * 3 + 3), id: \.self) { elementIndex in
                         Button(action: {
-                            labelingRecordListManager.setActionDetailOfTemporaryRedord(type: types[elementIndex])
+                            labelingRecordListManager.setActionDetailOfTemporaryRecord(type: types[elementIndex])
                         }, label: {
                             Text(types[elementIndex])
                         })
@@ -84,7 +84,7 @@ struct ResultView: View {
             )
             Button(
                 action: {
-                    var csvName = labelingRecordListManager.setGameCsvPath()
+                    let csvName = labelingRecordListManager.setGameCsvPath()
                     if let csvName{
                         tabListManager.setContentTitle(id: id, newTitle: csvName)
                     }
@@ -92,13 +92,19 @@ struct ResultView: View {
                     Text("read")
             })
             Button(
-                action: {labelingRecordListManager.addRecordDataFrame()},
+                action: {labelingRecordListManager.addRecordCsv()},
                 label: {Text("write")}
             )
             Spacer()
         }
         .frame(maxWidth: .infinity,maxHeight: .infinity)
         .background(secondaryColor)
+        .alert(isPresented: $labelingRecordListManager.showAlert){
+            Alert(title: Text("注意"),
+                  message: Text("\(labelingRecordListManager.alertText)"),
+                  dismissButton: .default(Text("OK"))
+            )
+        }
     }
 }
 

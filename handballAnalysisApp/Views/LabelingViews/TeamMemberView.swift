@@ -11,6 +11,7 @@ import UniformTypeIdentifiers
 struct TeamMemberView: View {
     @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
+    @ObservedObject var videoPlayerManager:VideoPlayerManager
     
     var body: some View {
         GeometryReader(content: { geometry in
@@ -20,7 +21,8 @@ struct TeamMemberView: View {
                     PlayerView(
                         teamType: .leftTeam,
                         labelingRecordListManager: labelingRecordListManager,
-                        teamDataManager: teamDataManager
+                        teamDataManager: teamDataManager,
+                        videoPlayerManager: videoPlayerManager
                     )
                     .tabItem {}
                     .tag(0)
@@ -32,7 +34,8 @@ struct TeamMemberView: View {
                     PlayerView(
                         teamType: .rightTeam,
                         labelingRecordListManager: labelingRecordListManager,
-                        teamDataManager: teamDataManager
+                        teamDataManager: teamDataManager,
+                        videoPlayerManager: videoPlayerManager
                     )
                     .tabItem {}
                     .tag(2)
@@ -112,15 +115,32 @@ struct PlayerView: View {
     let teamType: TeamType
     @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @ObservedObject var teamDataManager: TeamDataManager
+    @ObservedObject var videoPlayerManager:VideoPlayerManager
     
-    init(teamType: TeamType,labelingRecordListManager:LabelingRecordListManager,teamDataManager: TeamDataManager) {
+    init(teamType: TeamType,labelingRecordListManager:LabelingRecordListManager,teamDataManager: TeamDataManager,videoPlayerManager:VideoPlayerManager) {
         self.teamType = teamType
         self.labelingRecordListManager = labelingRecordListManager
         self.teamDataManager = teamDataManager
+        self.videoPlayerManager = videoPlayerManager
     }
     
     var body: some View {
         VStack{
+            HStack{
+                Spacer()
+                Text("\(labelingRecordListManager.temporaryRecord.time ?? "00:00")")
+                    .font(.title)
+                    .foregroundStyle(.white)
+                Spacer()
+                Text("\(videoPlayerManager.localvideoPlayer.videoPastTimeString)")
+                    .font(.title)
+                    .foregroundStyle(.white)
+                Spacer()
+            }
+            .padding(EdgeInsets(top: 10,
+                                leading: 0,
+                                bottom: 0,
+                                trailing: 0))
             Spacer()
             HStack{
                 let results = [
@@ -131,7 +151,12 @@ struct PlayerView: View {
                 ]
                 ForEach(results, id: \.self) {result in
                     Button(role: .none,
-                           action: {labelingRecordListManager.setResultOfTemporaryRecord(result: result)},
+                           action: {
+                        labelingRecordListManager.clearTemporaryRecord()
+                        labelingRecordListManager.setResultOfTemporaryRecord(result: result)
+                        labelingRecordListManager.setTimeOfTemporaryRecord(time: videoPlayerManager.localvideoPlayer.videoPastTimeString)
+                        
+                    },
                            label: {Text(result.description())}
                     )
                 }
@@ -306,10 +331,10 @@ struct PlayerPositionButtom: View {
                 .onDrop(of: [UTType.text],
                         delegate: PositionDragDelegation(teamType: teamType,position: position,teamDataManager: teamDataManager))
                 .onTapGesture(count: 2) {
-                    labelingRecordListManager.setActionOfTemporaryRedord(action: playerName)
+                    labelingRecordListManager.setActionOfTemporaryRecord(action: playerName)
                 }
                 .onTapGesture {
-                    labelingRecordListManager.setAssistOfTemporaryRedord(assist: playerName)
+                    labelingRecordListManager.setAssistOfTemporaryRecord(assist: playerName)
                 }
                 .onLongPressGesture {
                     //長押しでリセットするか迷っている

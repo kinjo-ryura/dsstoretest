@@ -35,6 +35,8 @@ class LabelingRecordListManager: ObservableObject {
     @Published var gameCsvPath:String? = nil
     @Published var handballCourtMarkerType:HandballCourtMarkerType
     @Published var isPressedInCourt:Bool = false
+    @Published var showAlert:Bool = false
+    @Published var alertText:String = ""
     
     init(id:UUID){
         self.temporaryRecord = LabelingRecord(id:id)
@@ -51,18 +53,23 @@ class LabelingRecordListManager: ObservableObject {
         temporaryRecord.result = result
     }
     
+    //記録用の仮のレコードのtimeを設定する
+    func setTimeOfTemporaryRecord(time:String){
+        temporaryRecord.time = time
+    }
+    
     //記録用の仮のレコードのassistを設定する
-    func setAssistOfTemporaryRedord(assist:String){
+    func setAssistOfTemporaryRecord(assist:String){
         temporaryRecord.assist = assist
     }
     
     //記録用の仮のレコードのactionを設定する
-    func setActionOfTemporaryRedord(action:String){
+    func setActionOfTemporaryRecord(action:String){
         temporaryRecord.action = action
     }
     
     //記録用の仮のレコードのactionTypeを設定する
-    func setActionDetailOfTemporaryRedord(type:String){
+    func setActionDetailOfTemporaryRecord(type:String){
         temporaryRecord.actionDetail = type
     }
     //現在のresultによって表示するアクションタイプをリストで渡す
@@ -237,8 +244,54 @@ class LabelingRecordListManager: ObservableObject {
         return emptyList
     }
     
+    //emptyからアラートテキストを作成する
+    func createAlertText(emptyList:[String]) -> String{
+        var alertText = ""
+        
+        if emptyList.contains("team"){
+            alertText += "チーム,"
+        }
+        if emptyList.contains("time"){
+            alertText += "時間,"
+        }
+        if emptyList.contains("result"){
+            alertText += "結果,"
+        }
+        if emptyList.contains("assist"){
+            alertText += "アシスト,"
+        }
+        if emptyList.contains("action"){
+            alertText += "アクション,"
+        }
+        if emptyList.contains("goalkeeper"){
+            alertText += "ゴールキーパー,"
+        }
+        if emptyList.contains("actionType"){
+            alertText += "詳細,"
+        }
+        if emptyList.contains("detail"){
+            alertText += "追加情報,"
+        }
+        if emptyList.contains("assistPoint"){
+            alertText += "アシストポイント,"
+        }
+        if emptyList.contains("catchPoint"){
+            alertText += "キャッチポインt,"
+        }
+        if emptyList.contains("actionPoint"){
+            alertText += "アクションポイント,"
+        }
+        if emptyList.contains("goalPoint"){
+            alertText += "ゴールポイント,"
+        }
+        alertText = String(alertText.dropLast())
+        
+        return alertText
+    }
+    
     //temporaryRecordに足りない情報がないか調べる
-    func checkCompleteness(){
+    func checkCompleteness() -> [String]{
+        let onlyInActual:[String]
         //teamはタブを切り替えたときに初期化されるので調べない
         //resultを確認する
         let result = temporaryRecord.result
@@ -251,8 +304,7 @@ class LabelingRecordListManager: ObservableObject {
             let setAssumptionEmpty = Set(assumptionEmpty)
             let setActualEmpty = Set(actualEmpty)
             //想定していないから要素のリスト
-            let onlyInActual = setActualEmpty.subtracting(setAssumptionEmpty)
-            print(onlyInActual)
+            onlyInActual = Array(setActualEmpty.subtracting(setAssumptionEmpty))
         case .intercept:
             //actiontypeがラインアウト、ルーズボール、ドリブルカットの場合
             if["ラインアウト","ルーズボール","ドリブルカット"].contains(temporaryRecord.actionDetail){
@@ -262,8 +314,7 @@ class LabelingRecordListManager: ObservableObject {
                 let setAssumptionEmpty = Set(assumptionEmpty)
                 let setActualEmpty = Set(actualEmpty)
                 //想定していないから要素のリスト
-                let onlyInActual = setActualEmpty.subtracting(setAssumptionEmpty)
-                print(onlyInActual)
+                onlyInActual = Array( setActualEmpty.subtracting(setAssumptionEmpty))
             }else{
                 //actiontypeがラインアウト、ルーズボール、ドリブルカット以外の場合
                 let assumptionEmpty:[String] = ["goalkeeper","actionPoint","goalPoint"]//からでも良い要素のリスト
@@ -272,8 +323,7 @@ class LabelingRecordListManager: ObservableObject {
                 let setAssumptionEmpty = Set(assumptionEmpty)
                 let setActualEmpty = Set(actualEmpty)
                 //想定していないから要素のリスト
-                let onlyInActual = setActualEmpty.subtracting(setAssumptionEmpty)
-                print(onlyInActual)
+                onlyInActual = Array(setActualEmpty.subtracting(setAssumptionEmpty))
             }
         case .foul:
             //actiontypeがキック、オーバーステップ、ダブルドリブル、その他の場合
@@ -284,8 +334,7 @@ class LabelingRecordListManager: ObservableObject {
                 let setAssumptionEmpty = Set(assumptionEmpty)
                 let setActualEmpty = Set(actualEmpty)
                 //想定していないから要素のリスト
-                let onlyInActual = setActualEmpty.subtracting(setAssumptionEmpty)
-                print(onlyInActual)
+                onlyInActual = Array(setActualEmpty.subtracting(setAssumptionEmpty))
                 
             }else{
                 //actiontypeがキック、オーバーステップ、ダブルドリブル、その他以外bの場合
@@ -295,10 +344,10 @@ class LabelingRecordListManager: ObservableObject {
                 let setAssumptionEmpty = Set(assumptionEmpty)
                 let setActualEmpty = Set(actualEmpty)
                 //想定していないから要素のリスト
-                let onlyInActual = setActualEmpty.subtracting(setAssumptionEmpty)
-                print(onlyInActual)
+                onlyInActual = Array(setActualEmpty.subtracting(setAssumptionEmpty))
             }
         }
+        return onlyInActual
     }
 
     //追加情報をまとめる
@@ -319,22 +368,28 @@ class LabelingRecordListManager: ObservableObject {
     
     
     //データをgameCsvに追加する
-    func addRecordDataFrame(){
-        if let csvPath = gameCsvPath{
-            //additionをまとめる
-            mergeAddition()
-            //csvを一度読み込む
-            do{
-                var csvdata = try DataFrame(
-                    contentsOfCSVFile: URL(fileURLWithPath: self.gameCsvPath ?? ""),
-                    columns: ["チーム","時間","結果","アシスト","アクション",
-                              "ゴールキーパー","詳細","追加情報","アシストx","アシストy",
-                              "キャッチx","キャッチy","アクションx","アクションy",
-                              "ゴールx","ゴールy"]
-                )
-                //temporaryRecordを追加する
-                csvdata.append(
-                    row:temporaryRecord.team,
+    func addRecordCsv(){
+        //additionをまとめる
+        mergeAddition()
+        //temporaryRecordに足りない情報がないか調べる
+        let onlyInActual = checkCompleteness()
+        
+        //足りない情報がある場合
+        if onlyInActual.isEmpty{
+            
+            if let csvPath = gameCsvPath{
+                //csvを一度読み込む
+                do{
+                    var csvdata = try DataFrame(
+                        contentsOfCSVFile: URL(fileURLWithPath: self.gameCsvPath ?? ""),
+                        columns: ["チーム","時間","結果","アシスト","アクション",
+                                  "ゴールキーパー","詳細","追加情報","アシストx","アシストy",
+                                  "キャッチx","キャッチy","アクションx","アクションy",
+                                  "ゴールx","ゴールy"]
+                    )
+                    //temporaryRecordを追加する
+                    csvdata.append(
+                        row:temporaryRecord.team,
                         temporaryRecord.time,
                         temporaryRecord.result.description(),
                         temporaryRecord.assist,
@@ -350,15 +405,22 @@ class LabelingRecordListManager: ObservableObject {
                         Double(temporaryRecord.actionPoint?.y ?? 0),
                         Double(temporaryRecord.goalPoint?.x ?? 0),
                         Double(temporaryRecord.goalPoint?.y ?? 0)
-                )
-                //csvに上書きする
-                try csvdata.writeCSV(to: URL(fileURLWithPath: csvPath))
-            }catch{
-                print("書き込みに失敗したよ")
-                print(error)
+                    )
+                    //csvに上書きする
+                    try csvdata.writeCSV(to: URL(fileURLWithPath: csvPath))
+                }catch{
+                    print("書き込みに失敗したよ")
+                    print(error)
+                }
+            }else{
+                print("csvpathが設定されていない")
             }
         }else{
-            print("csvpathが設定されていない")
+            //足りない情報がある場合
+            var alertText = createAlertText(emptyList: onlyInActual)
+            alertText += "を入力してください"
+            self.alertText = alertText
+            self.showAlert = true
         }
     }
 }

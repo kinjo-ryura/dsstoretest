@@ -14,69 +14,89 @@ struct LabelingView: View {
     let id:UUID
     
     var body: some View {
-        //remoteviewが表示されているかどうかで表示を変える
-        if videoPlayerManager.remoteView{
-            VSplitView{
-                HStack(spacing: 0){
-                    HSplitView{
-                        VStack(spacing:0){
-                            VideoView(videoPlayerManager: videoPlayerManager)
-                            VideoOperationView(videoPlayerManager: videoPlayerManager)
-                        }
-                        HandballCourtView(labelingRecordListManager: labelingRecordListManager)
-                    }
-                    MarkerSelectView(labelingRecordListManager: labelingRecordListManager).frame(maxWidth: 50,maxHeight:.infinity)
-                }
-                .padding(EdgeInsets(top: 38,//なぜか上が飛び出るのでtoolbar分だけ下げる
-                                    leading: 0,
-                                    bottom: 0,
-                                    trailing: 0))
-                HSplitView{
-                    TeamMemberView(
-                        labelingRecordListManager: labelingRecordListManager,
-                        teamDataManager: teamDataManager
-                    )
-                    ResultView(labelingRecordListManager: labelingRecordListManager,
-                               teamDataManager: teamDataManager,
-                               id:id
-                    )
-                    HandballGoalView(labelingRecordListManager: labelingRecordListManager)
-                }
-            }
+        
+        content
             .background(thirdColor)
-            .frame(maxWidth: .infinity,maxHeight: .infinity)
-        }else{
-            VSplitView{
-                HStack(spacing: 0){
-                    HSplitView{
-                        VStack(spacing: 0) {
-                            HandballGoalView(labelingRecordListManager: labelingRecordListManager)
-                                .frame(maxWidth: .infinity,maxHeight:.infinity)
-                            VideoOperationView(videoPlayerManager: videoPlayerManager)
-                        }
-                        .frame(maxWidth: .infinity,maxHeight:.infinity)
-                        HandballCourtView(labelingRecordListManager: labelingRecordListManager)
-                    }
-                    MarkerSelectView(labelingRecordListManager: labelingRecordListManager).frame(maxWidth: 50,maxHeight:.infinity)
-                }
-                .padding(EdgeInsets(top: 38,//なぜか上が飛び出るのでtoolbar分だけ下げる
-                                    leading: 0,
-                                    bottom: 0,
-                                    trailing: 0))
-                HSplitView{
-                    TeamMemberView(
-                        labelingRecordListManager: labelingRecordListManager,
-                        teamDataManager: teamDataManager
-                    )
-                    ResultView(labelingRecordListManager: labelingRecordListManager,
-                               teamDataManager: teamDataManager,
-                               id:id
-                    )
-                }
-            }
-            .background(thirdColor)
-            .frame(maxWidth: .infinity,maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        if videoPlayerManager.remoteView {
+            remoteViewLayout
+        } else {
+            localViewLayout
         }
-
+    }
+    
+    @ViewBuilder
+    private var localViewLayout: some View {
+        // Remote view layout here
+                    VSplitView{
+                        HStack(spacing: 0){
+                            HSplitView{
+                                VStack(spacing:0){
+                                    VideoView(videoPlayerManager: videoPlayerManager)
+                                    VideoOperationView(videoPlayerManager: videoPlayerManager)
+                                }
+                                HandballCourtView(labelingRecordListManager: labelingRecordListManager)
+                            }
+                            MarkerSelectView(labelingRecordListManager: labelingRecordListManager).frame(maxWidth: 50,maxHeight:.infinity)
+                        }
+                        .padding(EdgeInsets(top: 38,//なぜか上が飛び出るのでtoolbar分だけ下げる
+                                            leading: 0,
+                                            bottom: 0,
+                                            trailing: 0))
+                        HSplitView{
+                            TeamMemberView(
+                                labelingRecordListManager: labelingRecordListManager,
+                                teamDataManager: teamDataManager,
+                                videoPlayerManager: videoPlayerManager
+                            )
+                            ResultView(labelingRecordListManager: labelingRecordListManager,
+                                       teamDataManager: teamDataManager,
+                                       id:id
+                            )
+                            HandballGoalView(labelingRecordListManager: labelingRecordListManager)
+                        }
+                    }
+                    .background(thirdColor)
+                    .frame(maxWidth: .infinity,maxHeight: .infinity)
+    }
+    
+    @ViewBuilder
+    private var remoteViewLayout: some View {
+        // Local view layout here
+                    VSplitView{
+                        HStack(spacing: 0){
+                            HSplitView{
+                                HandballGoalView(labelingRecordListManager: labelingRecordListManager)
+                                        .frame(maxWidth: .infinity,maxHeight:.infinity)
+                                .frame(maxWidth: .infinity,maxHeight:.infinity)
+                                HandballCourtView(labelingRecordListManager: labelingRecordListManager)
+                            }
+                            MarkerSelectView(labelingRecordListManager: labelingRecordListManager).frame(maxWidth: 50,maxHeight:.infinity)
+                        }
+                        .padding(EdgeInsets(top: 38,//なぜか上が飛び出るのでtoolbar分だけ下げる
+                                            leading: 0,
+                                            bottom: 0,
+                                            trailing: 0))
+                        HSplitView{
+                            TeamMemberView(
+                                labelingRecordListManager: labelingRecordListManager,
+                                teamDataManager: teamDataManager,
+                                videoPlayerManager: videoPlayerManager
+                            )
+                            VStack(spacing:0){
+                                VideoOperationView(videoPlayerManager: videoPlayerManager)
+                                ResultView(labelingRecordListManager: labelingRecordListManager,
+                                           teamDataManager: teamDataManager,
+                                           id:id
+                                )
+                            }
+                        }
+                    }
+                    .background(thirdColor)
+                    .frame(maxWidth: .infinity,maxHeight: .infinity)
     }
 }

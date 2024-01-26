@@ -28,7 +28,6 @@
 		739548A12B510520007530B3 /* PositionDragDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548A02B510520007530B3 /* PositionDragDelegate.swift */; };
 		739548A32B53DE3B007530B3 /* MarkerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548A22B53DE3B007530B3 /* MarkerSelectView.swift */; };
 		739548A52B5407E0007530B3 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739548A42B5407E0007530B3 /* VideoPlayer.swift */; };
-		739548A82B540937007530B3 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 739548A72B540937007530B3 /* YouTubePlayerKit */; };
 		73AAB49F2B60FE7D009F11F3 /* DisplayRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB49E2B60FE7D009F11F3 /* DisplayRecordManager.swift */; };
 		73AAB4A22B61097B009F11F3 /* RecordTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB4A12B61097B009F11F3 /* RecordTableView.swift */; };
 		73AAB4A42B614A7B009F11F3 /* ScoreBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB4A32B614A7B009F11F3 /* ScoreBoardView.swift */; };
@@ -78,7 +77,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				739548A82B540937007530B3 /* YouTubePlayerKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,13 +152,13 @@
 			children = (
 				7395486A2B4EA74F007530B3 /* LabelingView.swift */,
 				739548A22B53DE3B007530B3 /* MarkerSelectView.swift */,
-				739548902B4FDD32007530B3 /* VideoView.swift */,
 				739548922B4FDD54007530B3 /* HandballCourtView.swift */,
 				739548942B4FDD83007530B3 /* TeamMemberView.swift */,
 				739548962B4FDDDC007530B3 /* ResultView.swift */,
 				739548982B4FDE02007530B3 /* HandballGoalView.swift */,
-				73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */,
+				739548902B4FDD32007530B3 /* VideoView.swift */,
 				73AAB4AB2B627BA3009F11F3 /* VideoOperationView.swift */,
+				73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */,
 			);
 			path = LabelingViews;
 			sourceTree = "<group>";
@@ -195,7 +193,6 @@
 			);
 			name = handballAnalysisApp;
 			packageProductDependencies = (
-				739548A72B540937007530B3 /* YouTubePlayerKit */,
 			);
 			productName = handballAnalysisApp;
 			productReference = 7395484E2B4EA0D6007530B3 /* handballAnalysisApp.app */;
@@ -226,7 +223,6 @@
 			);
 			mainGroup = 739548452B4EA0D6007530B3;
 			packageReferences = (
-				739548A62B540937007530B3 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
 			);
 			productRefGroup = 7395484F2B4EA0D6007530B3 /* Products */;
 			projectDirPath = "";
@@ -481,25 +477,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		739548A62B540937007530B3 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SvenTiigi/YouTubePlayerKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.6.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		739548A72B540937007530B3 /* YouTubePlayerKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 739548A62B540937007530B3 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
-			productName = YouTubePlayerKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 739548462B4EA0D6007530B3 /* Project object */;
 }
