@@ -43,9 +43,40 @@ class LabelingRecordListManager: ObservableObject {
         self.handballCourtMarkerType = HandballCourtMarkerType()
     }
     
+    //temporaryRecordのresultと一致するかを調べる
+    func isResult(result:Result) -> Bool{
+        return temporaryRecord.result == result
+    }
+    
+    //temporaryRecordのassistと一致するかを調べる
+    func isPlayerAssist(player:String) -> Bool{
+        return temporaryRecord.assist == player
+    }
+    
+    //temporaryRecordのactionと一致するかを調べる
+    func isPlayerAction(player:String) -> Bool{
+        return temporaryRecord.action == player
+    }
+    
+    //temporaryRecordのgoalkeeperと一致するかを調べる
+    func isGoalkeeper(goalkeeper:String) -> Bool{
+        return temporaryRecord.goalkeeper == goalkeeper
+    }
+    
+    //temporaryRecordのactionDetailと一致するかを調べる
+    func isActionDetail(actionDetail:String) -> Bool{
+        return temporaryRecord.actionDetail == actionDetail
+    }
+    
+    
     //記録用の仮のレコードを初期化する
     func clearTemporaryRecord(){
         temporaryRecord = LabelingRecord(id:UUID())
+    }
+    
+    //記録用の仮のレコードのteamを設定する
+    func setTeamOfTemporaryRecord(teamType:TeamType){
+        temporaryRecord.team = teamType
     }
     
     //記録用の仮のレコードのresultを設定する
@@ -59,12 +90,12 @@ class LabelingRecordListManager: ObservableObject {
     }
     
     //記録用の仮のレコードのassistを設定する
-    func setAssistOfTemporaryRecord(assist:String){
+    func setAssistOfTemporaryRecord(assist:String?){
         temporaryRecord.assist = assist
     }
     
     //記録用の仮のレコードのactionを設定する
-    func setActionOfTemporaryRecord(action:String){
+    func setActionOfTemporaryRecord(action:String?){
         temporaryRecord.action = action
     }
     
@@ -72,9 +103,15 @@ class LabelingRecordListManager: ObservableObject {
     func setActionDetailOfTemporaryRecord(type:String){
         temporaryRecord.actionDetail = type
     }
+    
+    //記録用の仮のレコードにgoalkeeperを設定する
+    func setGoalkeeperOfTemporaryRecord(goalkeeper:String){
+        temporaryRecord.goalkeeper = goalkeeper
+    }
+    
     //現在のresultによって表示するアクションタイプをリストで渡す
-    func getActionTypeList() -> [String]{
-        return temporaryRecord.result.getActionType()
+    func getActionDetailsList() -> [String]{
+        return temporaryRecord.result.getActionDetails()
     }
     
     //記録用のレコードをshow
@@ -466,7 +503,7 @@ enum Result{
         }
     }
     
-    func getActionType() -> [String]{
+    func getActionDetails() -> [String]{
         switch self {
         case .getPoint,.missShot:
             return ["ジャンプクイック", "ジャンプノーマル", "ジャンプスロー" ,

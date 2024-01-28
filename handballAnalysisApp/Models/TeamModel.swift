@@ -188,9 +188,9 @@ class TeamDataManager: ObservableObject {
     }
     
     //leftかrightを指定してgoalKeeperListを取得する
-    func getGoalKeeperList(teamType:TeamType) -> [String:Bool]{
-        return getTeamData(teamType: teamType).goalKeeperList
-    }
+//    func getGoalKeeperList(teamType:TeamType) -> [String:Bool]{
+//        return getTeamData(teamType: teamType).goalKeeperList
+//    }
     
     //leftかrightを指定してplayerlistから
     //指定した名前のBoolを返す
@@ -215,14 +215,18 @@ class TeamDataManager: ObservableObject {
     }
     
     func getOppositeGoalKeeperList(teamType:TeamType?) -> [String]{
+        print(teamType)
         if let teamType{
             switch teamType {
             case .leftTeam:
+                print("left team")
                 return rightTeam.goalKeeperList.filter { $0.value }.map { $0.key }
             case .rightTeam:
+                print("right team")
                 return leftTeam.goalKeeperList.filter { $0.value }.map { $0.key }
             }
         }else{
+            print("else")
             return []
         }
     }

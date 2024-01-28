@@ -29,10 +29,20 @@ struct ResultView: View {
                         Spacer()
                         ForEach(rowIndex * 3..<min(keeperCount, rowIndex * 3 + 3), id: \.self) { elementIndex in
                             Button(action: {
-                                // ここにボタンのアクションを記述
+                                labelingRecordListManager.setGoalkeeperOfTemporaryRecord(goalkeeper: keeperList[elementIndex])
                             }, label: {
                                 Text(keeperList[elementIndex])
-                            })
+                                    .bold()
+                                    .padding()
+                                    .frame(width: 100, height: 30)
+                                    .foregroundColor(labelingRecordListManager.isGoalkeeper(goalkeeper: keeperList[elementIndex]) ? handballGoalRed:handballGoalWhite)
+                                    .background(HandballCourtColor)
+                                    .clipShape(.rect(topLeadingRadius: 10,
+                                                     bottomLeadingRadius: 10,
+                                                     bottomTrailingRadius: 10,
+                                                     topTrailingRadius: 10
+                                                    ))
+                            }).buttonStyle(.plain)
                             Spacer()
                         }
                     }
@@ -41,19 +51,29 @@ struct ResultView: View {
                 Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
             }
             Spacer()
-            let types = labelingRecordListManager.getActionTypeList()
-            let typesCount = types.count
-            let typesRownum = Int(ceil(Double(typesCount) / Double(3)))
+            let details = labelingRecordListManager.getActionDetailsList()
+            let detailsCount = details.count
+            let detailsRownum = Int(ceil(Double(detailsCount) / Double(3)))
             
-            ForEach(0..<typesRownum, id: \.self) { rowIndex in
+            ForEach(0..<detailsRownum, id: \.self) { rowIndex in
                 HStack {
                     Spacer()
-                    ForEach(rowIndex * 3..<min(typesCount, rowIndex * 3 + 3), id: \.self) { elementIndex in
+                    ForEach(rowIndex * 3..<min(detailsCount, rowIndex * 3 + 3), id: \.self) { elementIndex in
                         Button(action: {
-                            labelingRecordListManager.setActionDetailOfTemporaryRecord(type: types[elementIndex])
+                            labelingRecordListManager.setActionDetailOfTemporaryRecord(type: details[elementIndex])
                         }, label: {
-                            Text(types[elementIndex])
-                        })
+                            Text(details[elementIndex])
+                                .bold()
+                                .padding()
+                                .frame(width: 140, height: 30)
+                                .foregroundColor(labelingRecordListManager.isActionDetail(actionDetail: details[elementIndex]) ? handballGoalRed:handballGoalWhite)
+                                .background(HandballCourtColor)
+                                .clipShape(.rect(topLeadingRadius: 10,
+                                                 bottomLeadingRadius: 10,
+                                                 bottomTrailingRadius: 10,
+                                                 topTrailingRadius: 10
+                                                ))
+                        }).buttonStyle(.plain)
                         Spacer()
                     }
                 }
