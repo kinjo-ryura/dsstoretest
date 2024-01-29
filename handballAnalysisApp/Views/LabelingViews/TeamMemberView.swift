@@ -53,7 +53,7 @@ struct TeamMemberView: View {
                                     labelingRecordListManager.setTeamOfTemporaryRecord(teamType: .leftTeam)
                                 },
                                label:{
-                            Text(teamDataManager.getTeamName(teamType: .leftTeam))
+                            Text(teamDataManager.getTeamName(teamType: .leftTeam) ?? "")
                                 .frame(maxWidth: .infinity, maxHeight:.infinity)
                                 .foregroundStyle(handballGoalWhite)
                                 .background(teamDataManager.getSelectedTab()==0 ? secondaryColor:primaryColor)
@@ -90,7 +90,7 @@ struct TeamMemberView: View {
                             labelingRecordListManager.setTeamOfTemporaryRecord(teamType: .rightTeam)
                                 },
                                label:{
-                            Text(teamDataManager.getTeamName(teamType: .rightTeam))
+                            Text(teamDataManager.getTeamName(teamType: .rightTeam) ?? "")
                                 .frame(maxWidth: .infinity, maxHeight:.infinity)
                                 .foregroundStyle(handballGoalWhite)
                                 .background(teamDataManager.getSelectedTab()==2 ? secondaryColor:primaryColor)
@@ -135,7 +135,7 @@ struct PlayerView: View {
                     .font(.title)
                     .foregroundStyle(handballGoalWhite)
                 Spacer()
-                Text("\(videoPlayerManager.localvideoPlayer.videoPastTimeString)")
+                Text("\(videoPlayerManager.localvideoPlayer.videoPastTimeString ?? "00:00")")
                     .font(.title)
                     .foregroundStyle(handballGoalWhite)
                 Spacer()
@@ -162,7 +162,7 @@ struct PlayerView: View {
                         
                     },
                            label: {
-                        Text(result.description())
+                        Text(result.description() ?? "")
                             .bold()
                             .padding()
 //                            .frame(width: 100, height: 30)
@@ -363,24 +363,24 @@ struct PlayerPositionButtom: View {
                     .font(.title3)
                     .foregroundStyle(handballGoalWhite)
             }
-            let playerName = position == .nonPosition ? player ?? "": teamDataManager.getPositionPlayer(teamType: teamType, position: position)
+            let playerName = position == .nonPosition ? player: teamDataManager.getPositionPlayer(teamType: teamType, position: position)
             let fontColor:Color = 
                 labelingRecordListManager.isPlayerAssist(player: playerName) ?
                 //assistTrue
                 labelingRecordListManager.isPlayerAction(player: playerName) ? .green : .yellow
                 //assistFalse
-                :labelingRecordListManager.isPlayerAction(player: playerName) ? .red : handballGoalWhite
+                :labelingRecordListManager.isPlayerAction(player: playerName) ? handballGoalRed : handballGoalWhite
             
             RoundedRectangle(cornerRadius: 5)
                 .fill(HandballCourtColor)
                 .frame(width: 100,height: 30)
                 .overlay(
-                    Text(playerName)
+                    Text(playerName ?? "")
                         .font(.title3)
                         .foregroundStyle(fontColor)
                 )
                 .onDrag({
-                    NSItemProvider(object: playerName as NSItemProviderWriting)
+                    NSItemProvider(object: (playerName ?? "") as NSItemProviderWriting)
                 })
                 .onDrop(of: [UTType.text],
                         delegate: PositionDragDelegation(teamType: teamType,position: position,teamDataManager: teamDataManager))
@@ -414,8 +414,8 @@ struct RegisterPlayerButton:View {
             let activePlayer = teamDataManager.isPlayerTrue(teamType: teamType, playerName: player)
             let activeGoalKeeper = teamDataManager.isGoalKeeperTrue(teamType: teamType, goalKeeperName: player)
             let fontColor:Color = activePlayer && activeGoalKeeper ? .green://キーパーかつスタメンなら緑
-                                    activePlayer ? .blue://スタメンなら青
-                                    activeGoalKeeper ? .red://キーパーなら赤
+                                    activePlayer ? tintBlue://スタメンなら青
+                                    activeGoalKeeper ? handballGoalRed://キーパーなら赤
                                     handballGoalWhite//どちらでもなければ白
             
             Rectangle()

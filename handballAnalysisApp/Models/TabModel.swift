@@ -135,7 +135,7 @@ enum TabViewType{
         case .labelingTabView:
             "square.and.pencil"
         case .displayTabView:
-            "chart.bar.fill"
+            "list.dash"
         }
     }
 }

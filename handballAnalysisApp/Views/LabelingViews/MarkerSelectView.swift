@@ -26,6 +26,7 @@ struct MarkerSelectView: View {
                     })
                     .buttonStyle(.plain)
                     .frame(width: geometry.size.width,height:geometry.size.height/CGFloat(markersCount))
+                    .keyboardShortcut(marker.2, modifiers: [])
                 }
             }
         }

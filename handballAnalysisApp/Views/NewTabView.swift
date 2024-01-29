@@ -13,18 +13,71 @@ struct NewTabView: View {
     
     var body: some View {
         VStack{
-            Button {
-                tabListManager.setTabType(id:id, tabViewType: .labelingTabView)
-                tabListManager.setContentTitle(id: id, newTitle: "labeling")
-            } label: {
-                Text("labeling")
-            }
-            Button {
-                tabListManager.setTabType(id: id, tabViewType: .displayTabView)
-                tabListManager.setContentTitle(id: id, newTitle: "display")
-            } label: {
-                Text("display")
-            }
+            HStack{
+                Text("ハンドボール分析アプリ")
+                    .bold()
+                    .font(.system(size: 50))
+                    .foregroundStyle(handballGoalWhite)
+                Spacer()
+            }.padding(EdgeInsets(top: 70,
+                                 leading: 110,
+                                 bottom: 0,
+                                 trailing: 0))
+            HStack{
+                Button {
+                    tabListManager.setTabType(id:id, tabViewType: .labelingTabView)
+                    tabListManager.setContentTitle(id: id, newTitle: "データ記録")
+                } label: {
+                    HStack{
+                        Image(systemName: "square.and.pencil")
+                            .font(.title)
+                        Text("データ記録")
+                            .font(.title2)
+                            .padding(EdgeInsets(top: 7,
+                                                leading: 0,
+                                                bottom: 0,
+                                                trailing: 0))
+                    }.foregroundStyle(handballGoalWhite)
+                }.onHover { inside in
+                    if inside {
+                        NSCursor.pointingHand.set() // ポインタカーソルに変更
+                    } else {
+                        NSCursor.arrow.set() // 通常の矢印カーソルに戻す
+                    }
+                }
+                Spacer()
+            }.padding(EdgeInsets(top: 100,
+                                 leading: 150,
+                                 bottom: 0,
+                                 trailing: 0))
+            HStack{
+                Button {
+                    tabListManager.setTabType(id: id, tabViewType: .displayTabView)
+                    tabListManager.setContentTitle(id: id, newTitle: "スコアボード")
+                } label: {
+                    HStack{
+                        Image(systemName: "list.dash")
+                            .font(.title)
+                        Text("スコアボード")
+                            .font(.title2)
+                            .padding(EdgeInsets(top: 3,
+                                                leading: 0,
+                                                bottom: 0,
+                                                trailing: 0))
+                    }.foregroundStyle(handballGoalWhite)
+                     
+                }.onHover { inside in
+                    if inside {
+                        NSCursor.pointingHand.set() // ポインタカーソルに変更
+                    } else {
+                        NSCursor.arrow.set() // 通常の矢印カーソルに戻す
+                    }
+                }
+                Spacer()
+            }.padding(EdgeInsets(top: 30,
+                                 leading: 150,
+                                 bottom: 0,
+                                 trailing: 0))
             Spacer()
 
         }.frame(maxWidth: .infinity,maxHeight: .infinity)
@@ -34,6 +87,7 @@ struct NewTabView: View {
                 bottomTrailingRadius: 0,
                 topTrailingRadius: 8
             ))
+            .buttonStyle(.plain)
     }
 }
 

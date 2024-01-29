@@ -17,7 +17,7 @@ struct VideoOperationView: View {
                 //再生時間を表示
                 Text("\(videoPlayerManager.getCurrentTime())  /  \(videoPlayerManager.getVideoPlayTime())")
                     .font(.title2)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(handballGoalWhite)
                     .padding(EdgeInsets(top: 0,
                                         leading: 27,
                                         bottom: 0,
@@ -28,90 +28,97 @@ struct VideoOperationView: View {
                     videoPlayerManager.seekPlusTime(plusTime: -10)
                 }, label: {
                     Image(systemName: "gobackward.10")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(handballGoalWhite)
                         .font(.title)
                         .frame(maxWidth: .infinity,maxHeight:.infinity)
                         .background(HandballCourtColor)
                 })
                 .buttonStyle(.plain)
                 .frame(maxWidth: 40, maxHeight:.infinity)
+                .keyboardShortcut("a", modifiers: [])
                 //５秒戻し
                 Button(action: {
                     videoPlayerManager.seekPlusTime(plusTime: -5)
                 }, label: {
                     Image(systemName: "gobackward.5")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(handballGoalWhite)
                         .font(.title)
                         .frame(maxWidth: .infinity,maxHeight:.infinity)
                         .background(HandballCourtColor)
                 })
                 .buttonStyle(.plain)
                 .frame(maxWidth: 40, maxHeight:.infinity)
+                .keyboardShortcut("s", modifiers: [])
                 //再生ボタン
                 Button(action: {
                     videoPlayerManager.startPauseVideo()
                 }, label: {
                     Image(systemName: videoPlayerManager.isPlay() ? "pause.fill":"play.fill")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(handballGoalWhite)
                         .font(.title)
                         .frame(maxWidth: .infinity,maxHeight:.infinity)
                         .background(HandballCourtColor)
                 })
                 .buttonStyle(.plain)
                 .frame(maxWidth: 40, maxHeight:.infinity)
+                .keyboardShortcut(KeyEquivalent.space, modifiers: [])
                 //５秒進める
                 Button(action: {
                     videoPlayerManager.seekPlusTime(plusTime: 5)
                 }, label: {
                     Image(systemName: "goforward.5")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(handballGoalWhite)
                         .font(.title)
                         .frame(maxWidth: .infinity,maxHeight:.infinity)
                         .background(HandballCourtColor)
                 })
                 .buttonStyle(.plain)
                 .frame(maxWidth: 40, maxHeight:.infinity)
+                .keyboardShortcut("d", modifiers: [])
                 //10秒進める
                 Button(action: {
                     videoPlayerManager.seekPlusTime(plusTime: 10)
                 }, label: {
                     Image(systemName: "goforward.10")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(handballGoalWhite)
                         .font(.title)
                         .frame(maxWidth: .infinity,maxHeight:.infinity)
                         .background(HandballCourtColor)
                 })
                 .buttonStyle(.plain)
                 .frame(maxWidth: 40, maxHeight:.infinity)
+                .keyboardShortcut("f", modifiers: [])
                 Spacer()
                 //再生速度を下げる
                 Button(action: {
                     videoPlayerManager.rateDown()
                 }, label: {
                     Image(systemName: "backward.fill")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(handballGoalWhite)
                         .font(.title)
                         .frame(maxWidth: .infinity,maxHeight:.infinity)
                         .background(HandballCourtColor)
                 })
                 .buttonStyle(.plain)
                 .frame(maxWidth: 40, maxHeight:.infinity)
+                .keyboardShortcut("q", modifiers: [])
                 //再生速度を表示
                 Text(videoPlayerManager.getCurrentPlayRate())
                     .font(.title)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(handballGoalWhite)
                 //再生速度を上げる
                 Button(action: {
                     videoPlayerManager.rateUp()
                 }, label: {
                     Image(systemName: "forward.fill")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(handballGoalWhite)
                         .font(.title)
                         .frame(maxWidth: .infinity,maxHeight:.infinity)
                         .background(HandballCourtColor)
                 })
                 .buttonStyle(.plain)
                 .frame(maxWidth: 40, maxHeight:.infinity)
+                .keyboardShortcut("t", modifiers: [])
                 Spacer()
                 //remoteviewにする
                 //remoteviewじゃない時だけこのボタンを表示する
@@ -121,7 +128,7 @@ struct VideoOperationView: View {
                         videoPlayerManager.remoteView = true
                     }, label: {
                         Image(systemName: "rectangle.inset.bottomright.filled")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(handballGoalWhite)
                             .font(.title)
                             .frame(maxWidth: .infinity,maxHeight:.infinity)
                             .background(HandballCourtColor)
@@ -139,7 +146,7 @@ struct VideoOperationView: View {
                     }
                 }, label: {
                     Image(systemName: "film")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(handballGoalWhite)
                         .font(.title)
                         .frame(maxWidth: .infinity,maxHeight:.infinity)
                         .background(HandballCourtColor)

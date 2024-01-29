@@ -16,6 +16,7 @@ let xmarkHoverColor = Color(red: 0.22, green: 0.28, blue: 0.38)
 let HandballCourtColor = Color(red:0.16, green:0.16, blue:0.16)
 let handballGoalWhite = Color(red: 0.89, green: 0.9, blue: 0.91)
 let handballGoalRed = Color(red: 0.85, green: 0.32, blue: 0.25)
+let tintBlue = Color(red: 0.30, green: 0.58, blue: 10)
 
 struct ContentView: View {
     @ObservedObject var windowDelegate: WindowDelegate
@@ -32,6 +33,7 @@ struct ContentView: View {
                     EmptyView()
                 }
             }
+            .frame(maxWidth: .infinity,maxHeight:.infinity)
             .background(primaryColor)
             .onAppear(){
                 NSEvent.addLocalMonitorForEvents(matching: [.mouseMoved]) {NSEvent in

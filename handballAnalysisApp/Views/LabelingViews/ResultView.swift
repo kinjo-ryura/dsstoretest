@@ -82,40 +82,135 @@ struct ResultView: View {
             Spacer()
             Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
             Spacer()
-            HStack{
-                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.additionContact,title:"接触")
-                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.additionReversefoot,title:"逆足")
-                AdditionToggle(isOn:$labelingRecordListManager.temporaryRecord.additionReversehand,title:"逆手")
+            //追加情報窓
+            HStack(spacing:40){
+                AdditionToggle(labelingRecordListManager: labelingRecordListManager,isOn:$labelingRecordListManager.temporaryRecord.additionContact,title:"接触")
+                AdditionToggle(labelingRecordListManager: labelingRecordListManager,isOn:$labelingRecordListManager.temporaryRecord.additionReversefoot,title:"逆足")
+                AdditionToggle(labelingRecordListManager: labelingRecordListManager,isOn:$labelingRecordListManager.temporaryRecord.additionReversehand,title:"逆手")
                 
             }
             Spacer()
-            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 37, bottom: 0, trailing: 37))
+            Divider()
+                .background(thirdColor)
             Spacer()
-            Button(
-                role: .none,
-                action: {labelingRecordListManager.showTmpRecord()
-                    labelingRecordListManager.checkCompleteness()
-                },
-                label: {Text("みせる")}
-            )
-            Button(
-                action: {labelingRecordListManager.createNewGameCsv()},
-                label: {Text("create")}
-            )
-            Button(
-                action: {
-                    let csvName = labelingRecordListManager.setGameCsvPath()
-                    if let csvName{
-                        tabListManager.setContentTitle(id: id, newTitle: csvName)
+            //登録窓
+            //時間、チーム名、結果、アクション詳細
+            HStack(spacing:0){
+                Spacer()
+                Spacer()
+                Text(labelingRecordListManager.temporaryRecord.time ?? "*時間*")
+                Spacer()
+                Text(teamDataManager.getTeamName(teamType: labelingRecordListManager.temporaryRecord.team) ?? "*チーム名*")
+                Spacer()
+                Text(labelingRecordListManager.temporaryRecord.result.description() ?? "*結果*")
+                Spacer()
+                Text(labelingRecordListManager.temporaryRecord.actionDetail ?? "*アクション詳細*")
+                Spacer()
+                Spacer()
+            }.font(.title3)
+                .foregroundStyle(handballGoalWhite)
+            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 70, bottom: 0, trailing: 70))
+            HStack(spacing:0){
+                let showList = labelingRecordListManager.getRegisterViewShowList()
+                //最大3までしかない
+                let showListCount = showList.count
+                //countの数によって表示の仕方を変える
+                ForEach(0..<showListCount, id:\.self){index in
+                    if index == 0{
+                        //assist表示
+                        Spacer()
+                        Spacer()
+                        Text(showList[index] ?? "*アシスト*")
+                        Spacer()
+                    }else if index == 1{
+                        //action表示
+                        Image(systemName: "arrow.right")
+                        Spacer()
+                        Text(showList[index] ?? "*アクション*")
+                        Spacer()
+                    }else if index == 2{
+                        //detail表示
+                        Image(systemName: "figure")
+                            .padding(EdgeInsets(top: 0,
+                                                leading: 0,
+                                                bottom: 0,
+                                                trailing: 5))
+                        Text(showList[index] ?? "*ゴールキーパー*")
+                        Spacer()
+                        Spacer()
                     }
-                },label: {
-                    Text("read")
-            })
-            Button(
-                action: {labelingRecordListManager.addRecordCsv()},
-                label: {Text("write")}
-            )
+                }
+            }.font(.title3)
+                .foregroundStyle(handballGoalWhite)
+            Divider().background(thirdColor).padding(EdgeInsets(top: 0, leading: 70, bottom: 0, trailing: 70))
+            HStack(spacing:0){
+                Spacer()
+                Spacer()
+                Text(labelingRecordListManager.temporaryRecord.addition ?? "追加情報なし")
+                    .font(.title3)
+                    .foregroundStyle(handballGoalWhite)
+                Spacer()
+                if labelingRecordListManager.gameCsvPath == nil{
+                    //csvpathがnilの時は読み込むボタンを表示する
+                    Button(
+                        action: {
+                            let csvName = labelingRecordListManager.setGameCsvPath()
+                            if let csvName{
+                                tabListManager.setContentTitle(id: id, newTitle: csvName)
+                            }
+                        },label: {
+                            Text("読み込む")
+                                .bold()
+                                .padding()
+                                .frame(width: 100, height: 30)
+                                .foregroundColor(handballGoalWhite)
+                                .background(HandballCourtColor)
+                                .clipShape(.rect(topLeadingRadius: 10,
+                                                 bottomLeadingRadius: 10,
+                                                 bottomTrailingRadius: 10,
+                                                 topTrailingRadius: 10
+                                                ))
+                        }).buttonStyle(.plain)
+                }else{
+                    Button(
+                        action: {
+                            if let teamName = teamDataManager.getTeamName(teamType: labelingRecordListManager.temporaryRecord.team){
+                                labelingRecordListManager.addRecordCsv(teamName: teamName)
+                            }else{
+                                labelingRecordListManager.showAlert = true
+                                labelingRecordListManager.alertText = "チーム名が登録されていません"
+                            }
+                        },
+                        label: {
+                            Text("データ追加")
+                                .bold()
+                                .padding()
+                                .frame(width: 100, height: 30)
+                                .foregroundColor(handballGoalWhite)
+                                .background(HandballCourtColor)
+                                .clipShape(.rect(topLeadingRadius: 10,
+                                                 bottomLeadingRadius: 10,
+                                                 bottomTrailingRadius: 10,
+                                                 topTrailingRadius: 10
+                                                ))
+                    }).buttonStyle(.plain)
+                }
+                Spacer()
+                Spacer()
+            }
             Spacer()
+            
+//            Button(
+//                action: {labelingRecordListManager.createNewGameCsv()},
+//                label: {Text("create")}
+//            )
+            Text(labelingRecordListManager.gameCsvPath ?? "")
+                .foregroundStyle(handballGoalWhite)
+                .font(.caption)
+                .padding(EdgeInsets(top: 0,
+                                    leading: 0,
+                                    bottom: 5,
+                                    trailing: 0))
         }
         .frame(maxWidth: .infinity,maxHeight: .infinity)
         .background(secondaryColor)
@@ -130,6 +225,7 @@ struct ResultView: View {
 
 
 struct AdditionToggle: View {
+    @ObservedObject var labelingRecordListManager:LabelingRecordListManager
     @Binding var isOn:Bool
     let title:String
     
@@ -138,9 +234,12 @@ struct AdditionToggle: View {
             Text(title).foregroundStyle(.white)
             Toggle(isOn: $isOn, label: {})
                 .toggleStyle(.switch)
-                .tint(.red)
-                .background(Color(red: 0.30, green: 0.58, blue: 10))
-                .clipShape(RoundedRectangle(cornerRadius: 11))
+                .tint(handballGoalRed)
+                .background(tintBlue)
+                .clipShape(RoundedRectangle(cornerRadius: 13))
+                .onChange(of: isOn) { oldValue, newValue in
+                    labelingRecordListManager.mergeAddition()
+                }
         }
     }
 }

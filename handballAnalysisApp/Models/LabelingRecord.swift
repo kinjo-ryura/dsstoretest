@@ -49,18 +49,30 @@ class LabelingRecordListManager: ObservableObject {
     }
     
     //temporaryRecordのassistと一致するかを調べる
-    func isPlayerAssist(player:String) -> Bool{
-        return temporaryRecord.assist == player
+    func isPlayerAssist(player:String?) -> Bool{
+        if let player{
+            return temporaryRecord.assist == player
+        }else{
+            return false
+        }
     }
     
     //temporaryRecordのactionと一致するかを調べる
-    func isPlayerAction(player:String) -> Bool{
-        return temporaryRecord.action == player
+    func isPlayerAction(player:String?) -> Bool{
+        if let player{
+            return temporaryRecord.action == player
+        }else{
+            return false
+        }
     }
     
     //temporaryRecordのgoalkeeperと一致するかを調べる
-    func isGoalkeeper(goalkeeper:String) -> Bool{
-        return temporaryRecord.goalkeeper == goalkeeper
+    func isGoalkeeper(goalkeeper:String?) -> Bool{
+        if let goalkeeper{
+            return temporaryRecord.goalkeeper == goalkeeper
+        }else{
+            return false
+        }
     }
     
     //temporaryRecordのactionDetailと一致するかを調べる
@@ -85,7 +97,7 @@ class LabelingRecordListManager: ObservableObject {
     }
     
     //記録用の仮のレコードのtimeを設定する
-    func setTimeOfTemporaryRecord(time:String){
+    func setTimeOfTemporaryRecord(time:String?){
         temporaryRecord.time = time
     }
     
@@ -113,33 +125,51 @@ class LabelingRecordListManager: ObservableObject {
     func getActionDetailsList() -> [String]{
         return temporaryRecord.result.getActionDetails()
     }
-    
-    //記録用のレコードをshow
-    func showTmpRecord(){
-        print(temporaryRecord)
+
+    //記録用のレコードのresultとactionDetailによって表示するtemporaryRecordの要素を決める
+    func getRegisterViewShowList() -> [String?]{
+        //resultがnoneでない、かつactionDetailがnilじゃないとき
+        switch temporaryRecord.result {
+        case .getPoint,.missShot,.none:
+            return [temporaryRecord.assist,temporaryRecord.action,temporaryRecord.goalkeeper]
+        case .intercept:
+            //actionDetailによって変化
+            if temporaryRecord.actionDetail == "ラインアウト" || temporaryRecord.actionDetail == "ルーズボール" || temporaryRecord.actionDetail == "ドリブルカット"{
+                return [temporaryRecord.assist]
+            }else{
+                return [temporaryRecord.assist, temporaryRecord.action]
+            }
+        case .foul:
+            //actionDetailによって変化
+            if temporaryRecord.actionDetail == "チャージング" || temporaryRecord.actionDetail == "ラインクロス"{
+                return [temporaryRecord.assist,temporaryRecord.action]
+            }else{
+                return [temporaryRecord.assist]
+            }
+        }
     }
     
     //表示するmarkerのリストを取得する
-    func getMarkers() -> [(HandballCourtMarkerType,String)]{
+    func getMarkers() -> [(HandballCourtMarkerType,String,KeyEquivalent)]{
         switch temporaryRecord.result{
         case  .getPoint,.missShot:
-            return [(.assistPoint,"soccerball.inverse")
-                    ,(.catchPoint,"hands.clap.fill"),
-                    (.actionPoint,"figure.handball")]
+            return [(.assistPoint,"soccerball.inverse","w")
+                    ,(.catchPoint,"hands.clap.fill","e"),
+                    (.actionPoint,"figure.handball","r")]
         case .intercept:
             if temporaryRecord.actionDetail == "ラインアウト" || temporaryRecord.actionDetail == "ルーズボール" || temporaryRecord.actionDetail == "ドリブルカット"{
-                return [(.assistPoint,"soccerball.inverse")]
+                return [(.assistPoint,"soccerball.inverse","w")]
             }else{
-                return [(.assistPoint,"soccerball.inverse"),
-                        (.catchPoint,"hands.clap.fill")]
+                return [(.assistPoint,"soccerball.inverse","w"),
+                        (.catchPoint,"hands.clap.fill","e")]
             }
         case .foul:
             if temporaryRecord.actionDetail == "チャージング" || temporaryRecord.actionDetail == "ラインクロス"{
-                return [(.assistPoint,"soccerball.inverse"),
-                        (.catchPoint, "hands.clap.fill"),
-                        (.actionPoint,"figure.handball")]
+                return [(.assistPoint,"soccerball.inverse","w"),
+                        (.catchPoint, "hands.clap.fill","e"),
+                        (.actionPoint,"figure.handball","r")]
             }else{
-                return [(.assistPoint,"exclamationmark.shield.fill")]
+                return [(.assistPoint,"exclamationmark.shield.fill","w")]
             }
         case .none:
             return []
@@ -391,13 +421,17 @@ class LabelingRecordListManager: ObservableObject {
     func mergeAddition(){
         var addition = ""
         if temporaryRecord.additionContact{
-            addition += "接触"
+            addition += "接触_"
         }
         if temporaryRecord.additionReversefoot{
-            addition += "逆足"
+            addition += "逆足_"
         }
         if temporaryRecord.additionReversehand{
-            addition += "逆手"
+            addition += "逆手_"
+        }
+        addition = String(addition.dropLast())
+        if addition == ""{
+            addition = "追加情報なし"
         }
         temporaryRecord.addition = addition
     }
@@ -405,9 +439,8 @@ class LabelingRecordListManager: ObservableObject {
     
     
     //データをgameCsvに追加する
-    func addRecordCsv(){
-        //additionをまとめる
-        mergeAddition()
+    //teamNameだけteamDataManagerが管理しているため引数に指定する
+    func addRecordCsv(teamName:String){
         //temporaryRecordに足りない情報がないか調べる
         let onlyInActual = checkCompleteness()
         
@@ -415,6 +448,7 @@ class LabelingRecordListManager: ObservableObject {
         if onlyInActual.isEmpty{
             
             if let csvPath = gameCsvPath{
+                print("追加します")
                 //csvを一度読み込む
                 do{
                     var csvdata = try DataFrame(
@@ -426,7 +460,7 @@ class LabelingRecordListManager: ObservableObject {
                     )
                     //temporaryRecordを追加する
                     csvdata.append(
-                        row:temporaryRecord.team,
+                        row:teamName,
                         temporaryRecord.time,
                         temporaryRecord.result.description(),
                         temporaryRecord.assist,
@@ -488,7 +522,7 @@ enum Result{
         }
     }
     
-    func description() -> String{
+    func description() -> String?{
         switch self {
         case .getPoint:
             return "得点"
@@ -499,7 +533,7 @@ enum Result{
         case .foul:
             return "反則"
         case .none:
-            return ""
+            return nil
         }
     }
     
@@ -536,9 +570,9 @@ enum HandballCourtMarkerType{
         case .catchPoint:
             return Color.green
         case .actionPoint:
-            return Color.red
+            return handballGoalRed
         case .none:
-            return Color.white
+            return handballGoalWhite
         }
     }
 }

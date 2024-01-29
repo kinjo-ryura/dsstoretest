@@ -53,23 +53,23 @@ class TeamDataManager: ObservableObject {
         selectedTab = select
     }
     
-    func getPositionPlayer(teamType:TeamType,position:Position) -> String{
+    func getPositionPlayer(teamType:TeamType,position:Position) -> String?{
         let positionPlayer = getTeamData(teamType: teamType).positionPlayer
         switch position {
         case .leftWing:
-            return positionPlayer.leftWing ?? ""
+            return positionPlayer.leftWing
         case .rightWing:
-            return positionPlayer.rightWing ?? ""
+            return positionPlayer.rightWing
         case .leftBack:
-            return positionPlayer.leftBack ?? ""
+            return positionPlayer.leftBack
         case .rightBack:
-            return positionPlayer.rightBack ?? ""
+            return positionPlayer.rightBack
         case .centerBack:
-            return positionPlayer.centerBack ?? ""
+            return positionPlayer.centerBack
         case .pivot:
-            return positionPlayer.pivot ?? ""
+            return positionPlayer.pivot
         case .nonPosition:
-            return ""
+            return nil
         }
     }
     
@@ -178,8 +178,12 @@ class TeamDataManager: ObservableObject {
     
     
     //leftかrightを指定してチーム名を取得する
-    func getTeamName(teamType:TeamType) -> String{
-        return getTeamData(teamType: teamType).teamName ?? ""
+    func getTeamName(teamType:TeamType?) -> String?{
+        if let teamType{
+            return getTeamData(teamType: teamType).teamName
+        }else{
+            return nil
+        }
     }
     
     //leftかrightを指定してplayerListを取得する

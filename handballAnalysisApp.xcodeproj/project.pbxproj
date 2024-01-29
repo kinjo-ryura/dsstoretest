@@ -36,6 +36,7 @@
 		73AAB4AA2B625925009F11F3 /* DisplayGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB4A92B625925009F11F3 /* DisplayGoalView.swift */; };
 		73AAB4AC2B627BA3009F11F3 /* VideoOperationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AAB4AB2B627BA3009F11F3 /* VideoOperationView.swift */; };
 		73AE37272B579D9200F8C9F0 /* RemoteVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */; };
+		73BAC9E42B668B640081940B /* VideoOperationCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BAC9E32B668B640081940B /* VideoOperationCommand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		73AAB4A92B625925009F11F3 /* DisplayGoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayGoalView.swift; sourceTree = "<group>"; };
 		73AAB4AB2B627BA3009F11F3 /* VideoOperationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoOperationView.swift; sourceTree = "<group>"; };
 		73AE37262B579D9200F8C9F0 /* RemoteVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteVideoView.swift; sourceTree = "<group>"; };
+		73BAC9E32B668B640081940B /* VideoOperationCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoOperationCommand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 			children = (
 				739548512B4EA0D6007530B3 /* handballAnalysisApp.swift */,
 				739548602B4EA0F4007530B3 /* Models */,
+				73BAC9E22B668AF70081940B /* Commands */,
 				739548612B4EA1CD007530B3 /* Views */,
 				739548552B4EA0D7007530B3 /* Assets.xcassets */,
 				7395485A2B4EA0D7007530B3 /* handballAnalysisApp.entitlements */,
@@ -174,6 +177,14 @@
 				73AAB4A92B625925009F11F3 /* DisplayGoalView.swift */,
 			);
 			path = DisplayViews;
+			sourceTree = "<group>";
+		};
+		73BAC9E22B668AF70081940B /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				73BAC9E32B668B640081940B /* VideoOperationCommand.swift */,
+			);
+			path = Commands;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,6 +278,7 @@
 				73AE37272B579D9200F8C9F0 /* RemoteVideoView.swift in Sources */,
 				73AAB4AC2B627BA3009F11F3 /* VideoOperationView.swift in Sources */,
 				739548912B4FDD32007530B3 /* VideoView.swift in Sources */,
+				73BAC9E42B668B640081940B /* VideoOperationCommand.swift in Sources */,
 				739548A52B5407E0007530B3 /* VideoPlayer.swift in Sources */,
 				739548972B4FDDDC007530B3 /* ResultView.swift in Sources */,
 				7395486D2B4EA75A007530B3 /* DisplayView.swift in Sources */,

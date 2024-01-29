@@ -12,9 +12,9 @@ struct LocalVideoPlayer: Identifiable{
     public var id: UUID
     public var player = AVPlayer()
     public var localVideoUrl:URL?
-    public var videoCurrentTimeString:String = ""
-    public var videoPastTimeString:String = ""
-    public var videoPlayTimeString = ""
+    public var videoCurrentTimeString:String = "00:00"
+    public var videoPastTimeString:String? = nil
+    public var videoPlayTimeString = "00:00"
     public var videoCurrentTimeDouble:Double = 0
     public var videoPlayTimeDouble:Double = 0
 }
