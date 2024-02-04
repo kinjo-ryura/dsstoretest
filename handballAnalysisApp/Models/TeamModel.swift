@@ -320,15 +320,16 @@ class TeamDataManager: ObservableObject {
                             addPlayerToPlayerList(teamType: teamType, playerName: playerName)
                         }
                     }
+                    //csvのファイル名からチーム名を取得する
+                    if let team = panel.url?.lastPathComponent{
+                        let teamname = team.split(separator: ".")[0]
+                        setTeamName(teamType: teamType, teamName: String(teamname))
+                    }
                 }catch{
                     print(error)
                 }
             }
-            //csvのファイル名からチーム名を取得する
-            if let team = panel.url?.lastPathComponent{
-                let teamname = team.split(separator: ".")[0]
-                setTeamName(teamType: teamType, teamName: String(teamname))
-            }
+            
         }
     }
     

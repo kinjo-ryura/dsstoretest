@@ -51,7 +51,7 @@ struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigation) {
-                    toolBar(windowDelegate: windowDelegate, TabListManager: tabListManager, toolBarStatus: $toolBarStatus, geometry: geometry)
+                    toolBar(windowDelegate: windowDelegate, toolBarStatus: $toolBarStatus, geometry: geometry)
                 }
             }
             .toolbarBackground(primaryColor)

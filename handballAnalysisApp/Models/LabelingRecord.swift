@@ -22,6 +22,9 @@ struct LabelingRecord: Identifiable {
     public var additionContact: Bool = false
     public var additionReversehand: Bool = false
     public var additionReversefoot: Bool = false
+    public var additionNaturalFlow: Bool = false
+    public var additionReverseFlow: Bool = false
+    public var additionBlock:Bool = false
     public var assistPoint: CGPoint?
     public var catchPoint: CGPoint?
     public var actionPoint: CGPoint?
@@ -30,7 +33,7 @@ struct LabelingRecord: Identifiable {
 
 
 
-class LabelingRecordListManager: ObservableObject {    
+class LabelingRecordListManager: ObservableObject {
     @Published var temporaryRecord: LabelingRecord
     @Published var gameCsvPath:String? = nil
     @Published var handballCourtMarkerType:HandballCourtMarkerType
@@ -125,7 +128,7 @@ class LabelingRecordListManager: ObservableObject {
     func getActionDetailsList() -> [String]{
         return temporaryRecord.result.getActionDetails()
     }
-
+    
     //記録用のレコードのresultとactionDetailによって表示するtemporaryRecordの要素を決める
     func getRegisterViewShowList() -> [String?]{
         //resultがnoneでない、かつactionDetailがnilじゃないとき
@@ -175,7 +178,7 @@ class LabelingRecordListManager: ObservableObject {
             return []
         }
     }
-
+    
     
     //コートのmarkerを設定する
     func setMarkerPosition(markerType:HandballCourtMarkerType,point:CGPoint){
@@ -212,10 +215,10 @@ class LabelingRecordListManager: ObservableObject {
             // ユーザーが保存を選択した場合の処理
             if let selectedURL = panel.url {
                 // selectedURLにファイルが保存されます
-//                ["チーム","時間","結果","アシスト","アクション",
-//                 "ゴールキーパー","詳細","追加情報","パスx","パスy",
-//                 "キャッチx","キャッチy","シュートx","シュートy",
-//                 "ゴールx","ゴールy"]
+                //                ["チーム","時間","結果","アシスト","アクション",
+                //                 "ゴールキーパー","詳細","追加情報","パスx","パスy",
+                //                 "キャッチx","キャッチy","シュートx","シュートy",
+                //                 "ゴールx","ゴールy"]
                 let data : DataFrame = ["チーム":["データ例"],
                                         "時間":["00:00"],
                                         "結果":["得点orシュートミス"],
@@ -246,7 +249,7 @@ class LabelingRecordListManager: ObservableObject {
     }
     
     //panelでgameCsvPathを設定する
-    func setGameCsvPath() -> String?{
+    func setGameCsvPath() -> URL?{
         let panel = NSOpenPanel()
         if panel.runModal() == .OK {
             do{
@@ -262,7 +265,7 @@ class LabelingRecordListManager: ObservableObject {
                 self.gameCsvPath = panel.url?.path
                 
                 //ファイル名を返す
-                return panel.url?.lastPathComponent.split(separator: ".").map(String.init).first
+                return panel.url
             }catch{
                 print(error)
             }
@@ -362,7 +365,7 @@ class LabelingRecordListManager: ObservableObject {
         //teamはタブを切り替えたときに初期化されるので調べない
         //resultを確認する
         let result = temporaryRecord.result
-            //resultによって埋める情報が違う
+        //resultによって埋める情報が違う
         switch result {
         case .getPoint,.missShot,.none:
             let assumptionEmpty:[String] = []//からでも良い要素のリスト
@@ -416,7 +419,7 @@ class LabelingRecordListManager: ObservableObject {
         }
         return onlyInActual
     }
-
+    
     //追加情報をまとめる
     func mergeAddition(){
         var addition = ""
@@ -429,6 +432,15 @@ class LabelingRecordListManager: ObservableObject {
         if temporaryRecord.additionReversehand{
             addition += "逆手_"
         }
+        if temporaryRecord.additionNaturalFlow{
+            addition += "利手流_"
+        }
+        if temporaryRecord.additionReverseFlow{
+            addition += "逆手流_"
+        }
+        if temporaryRecord.additionBlock{
+            addition += "枝"
+        }
         addition = String(addition.dropLast())
         if addition == ""{
             addition = "追加情報なし"
@@ -440,13 +452,17 @@ class LabelingRecordListManager: ObservableObject {
     
     //データをgameCsvに追加する
     //teamNameだけteamDataManagerが管理しているため引数に指定する
-    func addRecordCsv(teamName:String){
+    //成功したらtrueを返す
+    func addRecordCsv(teamName:String) -> Bool{
+        
+        //additionをまとめる
+        mergeAddition()
+        
         //temporaryRecordに足りない情報がないか調べる
         let onlyInActual = checkCompleteness()
         
         //足りない情報がある場合
         if onlyInActual.isEmpty{
-            
             if let csvPath = gameCsvPath{
                 print("追加します")
                 //csvを一度読み込む
@@ -479,12 +495,17 @@ class LabelingRecordListManager: ObservableObject {
                     )
                     //csvに上書きする
                     try csvdata.writeCSV(to: URL(fileURLWithPath: csvPath))
+                    //temporaryRecordをクリアする
+                    self.clearTemporaryRecord()
+                    return true
                 }catch{
                     print("書き込みに失敗したよ")
                     print(error)
+                    return false
                 }
             }else{
                 print("csvpathが設定されていない")
+                return false
             }
         }else{
             //足りない情報がある場合
@@ -492,6 +513,8 @@ class LabelingRecordListManager: ObservableObject {
             alertText += "を入力してください"
             self.alertText = alertText
             self.showAlert = true
+            
+            return false
         }
     }
 }

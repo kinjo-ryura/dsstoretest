@@ -86,7 +86,7 @@ struct LabelingView: View {
                                 labelingRecordListManager: labelingRecordListManager,
                                 teamDataManager: teamDataManager,
                                 videoPlayerManager: videoPlayerManager
-                            )
+                            ).frame(minWidth: 310)
                             VStack(spacing:0){
                                 VideoOperationView(videoPlayerManager: videoPlayerManager)
                                 ResultView(labelingRecordListManager: labelingRecordListManager,

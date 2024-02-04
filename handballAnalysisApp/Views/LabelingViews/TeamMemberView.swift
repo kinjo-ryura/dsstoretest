@@ -159,6 +159,8 @@ struct PlayerView: View {
                         labelingRecordListManager.setResultOfTemporaryRecord(result: result)
                         labelingRecordListManager.setTimeOfTemporaryRecord(time: videoPlayerManager.localvideoPlayer.videoPastTimeString)
                         labelingRecordListManager.setTeamOfTemporaryRecord(teamType: teamType)
+                        //markerをnoneに設定
+                        labelingRecordListManager.handballCourtMarkerType = .none
                         
                     },
                            label: {

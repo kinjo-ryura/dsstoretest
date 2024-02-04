@@ -128,8 +128,8 @@ class DisplayRecordManager: ObservableObject {
                 //正しければそのpathを設定する
                 self.gameCsvPath = panel.url?.path
                 
-                
-                
+                //追加する前に初期化する
+                displayRecordList.removeAll()
                 csvData.rows.forEach{ data in
                     let record = DisplayRecord(
                         team: data["チーム"] as? String ?? "",
@@ -164,6 +164,52 @@ class DisplayRecordManager: ObservableObject {
             }
         }
         return nil
+    }
+    
+    //gameCsvPathがnilじゃないときreloadをする
+    func reloadGameCsv(){
+        if let gameCsvPath{
+            do{
+                let csvData = try DataFrame(
+                    contentsOfCSVFile: URL(fileURLWithPath: gameCsvPath),
+                    columns: ["チーム","時間","結果","アシスト","アクション",
+                              "ゴールキーパー","詳細","追加情報","アシストx","アシストy",
+                              "キャッチx","キャッチy","アクションx","アクションy",
+                              "ゴールx","ゴールy"]
+                )
+                //追加する前に初期化する
+                displayRecordList.removeAll()
+                //データを追加していく
+                csvData.rows.forEach{ data in
+                    let record = DisplayRecord(
+                        team: data["チーム"] as? String ?? "",
+                        time: data["時間"] as? String ?? "",
+                        result: data["結果"] as? String ?? "",
+                        assist: data["アシスト"] as? String ?? "",
+                        action: data["アクション"] as? String ?? "",
+                        goalkeeper: data["ゴールキーパー"] as? String ?? "",
+                        actionDetail: data["詳細"] as? String ?? "",
+                        addition: data["追加情報"] as? String ?? "",
+                        assistPoint: CGPoint(
+                            x: data["アシストx"] as? Double ?? 0,
+                            y: data["アシストy"] as? Double ?? 0),
+                        catchPoint: CGPoint(
+                            x: data["キャッチx"] as? Double ?? 0,
+                            y: data["キャッチy"] as? Double ?? 0),
+                        actionPoint: CGPoint(
+                            x: data["アクションx"] as? Double ?? 0,
+                            y: data["アクションy"] as? Double ?? 0),
+                        goalPoint: CGPoint(
+                            x: data["ゴールx"] as? Double ?? 0,
+                            y: data["ゴールy"] as? Double ?? 0)
+                    )
+                    displayRecordList.append(record)
+                }
+                setTeamNames()
+            }catch{
+                print(error)
+            }
+        }
     }
     
 }

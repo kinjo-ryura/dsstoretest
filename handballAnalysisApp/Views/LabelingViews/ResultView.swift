@@ -87,7 +87,11 @@ struct ResultView: View {
                 AdditionToggle(labelingRecordListManager: labelingRecordListManager,isOn:$labelingRecordListManager.temporaryRecord.additionContact,title:"接触")
                 AdditionToggle(labelingRecordListManager: labelingRecordListManager,isOn:$labelingRecordListManager.temporaryRecord.additionReversefoot,title:"逆足")
                 AdditionToggle(labelingRecordListManager: labelingRecordListManager,isOn:$labelingRecordListManager.temporaryRecord.additionReversehand,title:"逆手")
-                
+            }
+            HStack(spacing:40){
+                AdditionToggle(labelingRecordListManager: labelingRecordListManager, isOn: $labelingRecordListManager.temporaryRecord.additionNaturalFlow, title: "利手流")
+                AdditionToggle(labelingRecordListManager: labelingRecordListManager, isOn: $labelingRecordListManager.temporaryRecord.additionReverseFlow, title: "逆手流")
+                AdditionToggle(labelingRecordListManager: labelingRecordListManager, isOn: $labelingRecordListManager.temporaryRecord.additionBlock, title: "枝")
             }
             Spacer()
             Divider()
@@ -154,9 +158,24 @@ struct ResultView: View {
                     //csvpathがnilの時は読み込むボタンを表示する
                     Button(
                         action: {
-                            let csvName = labelingRecordListManager.setGameCsvPath()
-                            if let csvName{
+                            let csvPath = labelingRecordListManager.setGameCsvPath()
+                            if let csvPath{
+                                let csvName = csvPath.lastPathComponent.split(separator: ".").map(String.init).first!
                                 tabListManager.setContentTitle(id: id, newTitle: csvName)
+                                //displayTabを追加する
+                                let id = UUID()
+                                //csvを同じに設定する
+                                let newTab = MainView(
+                                    id:id,
+                                    title: csvName,
+                                    tabViewType: .newTabView,
+                                    labelingRecordListManager: LabelingRecordListManager(id:id),
+                                    teamDataManager: TeamDataManager(id:id),
+                                    videoPlayerManaer: VideoPlayerManager(id:id),
+                                    displayRecordManager: DisplayRecordManager()
+                                )
+                                tabListManager.addTabData(tabData: newTab)
+                                tabListManager.setTabType(id:id, tabViewType: .displayTabView)
                             }
                         },label: {
                             Text("読み込む")
@@ -175,7 +194,20 @@ struct ResultView: View {
                     Button(
                         action: {
                             if let teamName = teamDataManager.getTeamName(teamType: labelingRecordListManager.temporaryRecord.team){
-                                labelingRecordListManager.addRecordCsv(teamName: teamName)
+                                let finished = labelingRecordListManager.addRecordCsv(teamName: teamName)
+                                if finished{
+                                    let currentTeamtab = teamDataManager.getSelectedTab()
+                                    //データ追加が成功したらmarkerを初期化する
+                                    labelingRecordListManager.handballCourtMarkerType = .none
+                                    //データ追加が成功したらチームを変更する
+                                    if currentTeamtab == 0{
+                                        //leftが現在の場合
+                                        teamDataManager.selectedTab = 2
+                                    }else if currentTeamtab == 2{
+                                        //rightが現在の場合
+                                        teamDataManager.selectedTab = 0
+                                    }
+                                }
                             }else{
                                 labelingRecordListManager.showAlert = true
                                 labelingRecordListManager.alertText = "チーム名が登録されていません"
@@ -193,17 +225,17 @@ struct ResultView: View {
                                                  bottomTrailingRadius: 10,
                                                  topTrailingRadius: 10
                                                 ))
-                    }).buttonStyle(.plain)
+                        }).buttonStyle(.plain)
                 }
                 Spacer()
                 Spacer()
             }
             Spacer()
             
-//            Button(
-//                action: {labelingRecordListManager.createNewGameCsv()},
-//                label: {Text("create")}
-//            )
+            //            Button(
+            //                action: {labelingRecordListManager.createNewGameCsv()},
+            //                label: {Text("create")}
+            //            )
             Text(labelingRecordListManager.gameCsvPath ?? "")
                 .foregroundStyle(handballGoalWhite)
                 .font(.caption)

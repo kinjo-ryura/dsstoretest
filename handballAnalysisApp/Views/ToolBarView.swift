@@ -12,7 +12,7 @@ import SwiftUI
 
 struct toolBar: View{
     @ObservedObject var windowDelegate: WindowDelegate
-    @ObservedObject var TabListManager: TabListManager
+    @EnvironmentObject var tabListManager:TabListManager
     @Binding var toolBarStatus: Bool
     let geometry: GeometryProxy
     @State var plusIsHovering: Bool = false
@@ -33,11 +33,11 @@ struct toolBar: View{
                 
             }
             HStack(spacing: 0){
-                toolBarDivder(id: nil, TabListManager:_TabListManager)
-                ForEach(Array(TabListManager.TabDataList.indices), id: \.self) { index in
-                    toolBarTab(id: TabListManager.TabDataList[index].id)
+                toolBarDivder(id: nil)
+                ForEach(Array(tabListManager.TabDataList.indices), id: \.self) { index in
+                    toolBarTab(id: tabListManager.TabDataList[index].id)
                         .frame(maxWidth: 180)
-                    toolBarDivder(id: TabListManager.TabDataList[index].id, TabListManager:_TabListManager)
+                    toolBarDivder(id: tabListManager.TabDataList[index].id)
                 }
                 ZStack{
                     Rectangle()
@@ -68,7 +68,7 @@ struct toolBar: View{
                                 videoPlayerManaer: VideoPlayerManager(id:id),
                                 displayRecordManager: DisplayRecordManager()
                             )
-                            TabListManager.addTabData(tabData: newTab)
+                            tabListManager.addTabData(tabData: newTab)
                         }
                 }
                 Spacer()
@@ -81,11 +81,10 @@ struct toolBar: View{
 
 struct toolBarDivder: View {
     let id: UUID?
-    @ObservedObject var TabListManager: TabListManager
+    @EnvironmentObject var tabListManager:TabListManager
     
-    init(id: UUID?, TabListManager: ObservedObject<TabListManager>) {
+    init(id: UUID?) {
         self.id = id
-        self._TabListManager = TabListManager
     }
     
     var body: some View {
@@ -94,15 +93,15 @@ struct toolBarDivder: View {
             Rectangle().fill(primaryColor).frame(width: 10)
                 .clipShape(.rect(
                     topLeadingRadius: 0,
-                    bottomLeadingRadius: TabListManager.isSelectedTab(id: id) ? 7:0,
-                    bottomTrailingRadius: TabListManager.isNextSelectedTab(id: id) ? 7:0,
+                    bottomLeadingRadius: tabListManager.isSelectedTab(id: id) ? 7:0,
+                    bottomTrailingRadius: tabListManager.isNextSelectedTab(id: id) ? 7:0,
                     topTrailingRadius: 0
                 ))
 
             //最初のdividerだけは常に表示しない
             if let id{
                 //タブと次のタブが選択されていない時だけ表示する
-                if !TabListManager.isSelectedTab(id: id) && !TabListManager.isNextSelectedTab(id: id){
+                if !tabListManager.isSelectedTab(id: id) && !tabListManager.isNextSelectedTab(id: id){
                     Rectangle()
                         .fill(secondaryColor)
                         .frame(width: 1.5, height: 16)

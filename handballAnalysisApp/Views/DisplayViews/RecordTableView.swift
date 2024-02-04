@@ -28,6 +28,9 @@ struct RecordTableView: View {
                     print("選択なし")
                 }
             }
+            .onAppear(perform: {
+                displayRecordManager.reloadGameCsv()
+            })
         }
         .padding(EdgeInsets(top: 50,
                             leading: 10,
